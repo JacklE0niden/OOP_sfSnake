@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
-
+// #include <SFML/include/SFML/Graphics.hpp>
+// #include <SFML/include/SFML/Audio.hpp>
 #include <memory>
 
 #include "MenuScreen.h"
@@ -12,7 +13,7 @@ const sf::Time Game::TimePerFrame = sf::seconds(1.f / 10.f);
 std::shared_ptr<Screen> Game::Screen = std::make_shared<MenuScreen>();
 
 Game::Game()
-: window_(sf::VideoMode(Game::Width, Game::Height), "sfSnake")
+: window_(sf::VideoMode(Game::Width, Game::Height), "sfSnake") //VideoMode构造函数的用法
 {
 	bgMusic_.openFromFile("Music/bg_music.wav");
 	bgMusic_.setLoop(true);

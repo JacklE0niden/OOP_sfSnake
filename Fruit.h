@@ -2,7 +2,8 @@
 #define FRUIT_H
 
 #include <SFML/Graphics.hpp>
-
+// #include <SFML/include/SFML/Graphics.hpp>
+// #include <SFML/include/SFML/Audio.hpp>
 namespace sfSnake
 {
 class Fruit

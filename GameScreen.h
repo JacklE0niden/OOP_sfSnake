@@ -2,7 +2,8 @@
 #define GAME_SCREEN_H
 
 #include <SFML/Graphics.hpp>
-
+// #include <SFML/include/SFML/Graphics.hpp>
+// #include <SFML/include/SFML/Audio.hpp>
 #include "Screen.h"
 #include "Snake.h"
 #include "Fruit.h"

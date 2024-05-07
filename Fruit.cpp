@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
-
+// #include <SFML/include/SFML/Graphics.hpp>
+// // #include <SFML/include/SFML/Audio.hpp>
 #include "Fruit.h"
 
 using namespace sfSnake;
