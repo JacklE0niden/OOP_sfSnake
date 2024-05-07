@@ -11,7 +11,7 @@ using namespace sfSnake;
 
 MenuScreen::MenuScreen()
 {
-	font_.loadFromFile("Fonts/game_over.ttf");
+	font_.loadFromFile("Fonts/ARLRDBD.TTF");
 	text_.setFont(font_);
 	text_.setString(
 		"\n\n\n\n\n\n\n\n\nPress [SPACE] to play"

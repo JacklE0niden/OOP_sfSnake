@@ -12,7 +12,7 @@ using namespace sfSnake;
 
 GameOverScreen::GameOverScreen(std::size_t score) : score_(score)
 {
-	font_.loadFromFile("Fonts/game_over.ttf");
+	font_.loadFromFile("Fonts/ARLRDBD.TTF");
 	text_.setFont(font_);
 	text_.setString("Your score: " + std::to_string(score) + "!"
 		"\n\nPress [SPACE] to retry"

@@ -60,7 +60,7 @@ void Snake::checkFruitCollisions(std::vector<Fruit>& fruits)
 {
 	decltype(fruits.begin()) toRemove = fruits.end();
 
-	for (auto& it = fruits.begin(); it != fruits.end(); ++it)
+	for (auto it = fruits.begin(); it != fruits.end(); ++it)
 	{
 		if (it->getBounds().intersects(nodes_[0].getBounds()))
 			toRemove = it;
