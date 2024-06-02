@@ -10,16 +10,20 @@
 
 using namespace sfSnake;
 
+//创建蛇对象
 GameScreen::GameScreen() : snake_()
 {
 
 }
 
+//处理输入
 void GameScreen::handleInput(sf::RenderWindow& window)
 {
 	snake_.handleInput();
 }
 
+
+//更新游戏状态，蛇移动、水果生成、碰撞检测
 void GameScreen::update(sf::Time delta)
 {
 	if (fruit_.size() == 0)
@@ -32,6 +36,8 @@ void GameScreen::update(sf::Time delta)
 		Game::Screen = std::make_shared<GameOverScreen>(snake_.getSize());
 }
 
+
+//渲染游戏界面
 void GameScreen::render(sf::RenderWindow& window)
 {
 	snake_.render(window);
@@ -40,6 +46,7 @@ void GameScreen::render(sf::RenderWindow& window)
 		fruit.render(window);
 }
 
+//生成水果
 void GameScreen::generateFruit()
 {
 	static std::default_random_engine engine;

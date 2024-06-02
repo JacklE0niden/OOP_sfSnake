@@ -17,6 +17,9 @@ namespace sfSnake
 		Left, Right, Up, Down
 	};
 
+
+
+// 这里只是声明，定义在cpp中
 class Snake
 {
 public:

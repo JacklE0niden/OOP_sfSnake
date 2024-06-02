@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 // #include <SFML/include/SFML/Graphics.hpp>
-// #include <SFML/include/SFML/Audio.hpp>
+#include <SFML/Audio.hpp>
 #include <memory>
 
 #include "GameScreen.h"
@@ -9,9 +9,11 @@
 
 using namespace sfSnake;
 
+// 菜单屏幕的各种信息
 MenuScreen::MenuScreen()
 {
-	font_.loadFromFile("Fonts/ARLRDBD.TTF");
+	// font_.loadFromFile("Fonts/ARLRDBD.TTF");
+	font_.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/Fonts/ARLRDBD.TTF");
 	text_.setFont(font_);
 	text_.setString(
 		"\n\n\n\n\n\n\n\n\nPress [SPACE] to play"
@@ -34,6 +36,7 @@ MenuScreen::MenuScreen()
 	snakeText_.setPosition(Game::Width / 2, Game::Height / 4);
 }
 
+// 处理菜单状态下的玩家相应
 void MenuScreen::handleInput(sf::RenderWindow& window)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
@@ -41,7 +44,7 @@ void MenuScreen::handleInput(sf::RenderWindow& window)
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		window.close();
 }
-
+// 更新菜单界面的状态，例如标题的动画效果
 void MenuScreen::update(sf::Time delta)
 {
 	static bool movingLeft = false;

@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 // #include <SFML/include/SFML/Graphics.hpp>
-// #include <SFML/include/SFML/Audio.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <memory>
 
@@ -12,7 +12,8 @@ using namespace sfSnake;
 
 GameOverScreen::GameOverScreen(std::size_t score) : score_(score)
 {
-	font_.loadFromFile("Fonts/ARLRDBD.TTF");
+	// font_.loadFromFile("Fonts/ARLRDBD.TTF");
+	font_.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/Fonts/ARLRDBD.TTF");
 	text_.setFont(font_);
 	text_.setString("Your score: " + std::to_string(score) + "!"
 		"\n\nPress [SPACE] to retry"
