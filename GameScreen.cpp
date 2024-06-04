@@ -19,7 +19,7 @@ GameScreen::GameScreen() : snake_()
 //处理输入
 void GameScreen::handleInput(sf::RenderWindow& window)
 {
-	snake_.handleInput();
+	snake_.handleInput(window);
 }
 
 
@@ -56,4 +56,3 @@ void GameScreen::generateFruit()
 
 	fruit_.push_back(Fruit(sf::Vector2f(xDistribution(engine), yDistribution(engine))));
 }
-

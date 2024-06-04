@@ -25,12 +25,12 @@ class Snake
 public:
 	Snake();
 
-	void handleInput();
+	void handleInput(const sf::RenderWindow&);
 	void update(sf::Time delta);
 	void render(sf::RenderWindow& window);
 
 	void checkFruitCollisions(std::vector<Fruit>& fruits);
-
+	sf::Sprite head(){return head_;};
 	bool hitSelf() const;
 
 	unsigned getSize() const;
@@ -52,6 +52,10 @@ private:
 
 	sf::SoundBuffer dieBuffer_;
 	sf::Sound dieSound_;
+
+	//设置蛇头的纹理
+	sf::Texture texture;
+	sf::Sprite head_;
 
 	std::vector<SnakeNode> nodes_;
 

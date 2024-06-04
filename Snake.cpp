@@ -31,28 +31,89 @@ Snake::Snake() : direction_(Direction::Up), hitSelf_(false)
 // TODO: 更改蛇头形状和蛇的形状，让蛇头变得更明显
 void Snake::initNodes()
 {
-	for (int i = 0; i < Snake::InitialSize; ++i)
-	{
-		nodes_.push_back(SnakeNode(sf::Vector2f(
+    texture.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/snake_head.png");
+
+
+    // 设置第一个节点的位置，使其不与蛇头重叠
+    for (int i = 0; i < Snake::InitialSize; ++i)
+    {
+		if (i==0)
+		{
+			head_.setTexture(texture);
+			head_.setScale(0.5, 0.5);
+    		// 设置蛇头的位置
+    		head_.setPosition(sf::Vector2f(
+        	Game::Width / 2 - SnakeNode::Width / 2,
+        	Game::Height / 2 - SnakeNode::Height / 2));
+		}
+		else{ // 蛇头已经单独处理，所以从第二个节点开始处理
+			nodes_.push_back(SnakeNode(sf::Vector2f(
 			Game::Width / 2 - SnakeNode::Width / 2,
-			Game::Height / 2 - (SnakeNode::Height / 2) + (SnakeNode::Height * i))));
-	}
+			Game::Height / 2 + (SnakeNode::Height * (i + 1)) - SnakeNode::Height / 2)));
+		}
+        
+    }
 }
 
 //处理用户输入，改变蛇方向
 // TODO: 优化用户输入的处理，使得蛇不能直接180度转向
 // TODO: 加入鼠标和wsad控制
-void Snake::handleInput()
+void Snake::handleInput(const sf::RenderWindow &window)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		direction_ = Direction::Up;
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		direction_ = Direction::Down;
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		direction_ = Direction::Left;
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		direction_ = Direction::Right;
+    Direction newDirection = direction_;
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        newDirection = Direction::Up;
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        newDirection = Direction::Down;
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        newDirection = Direction::Left;
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        newDirection = Direction::Right;
+
+    // 防止往反方向转向
+    if (!((direction_ == Direction::Up && newDirection == Direction::Down) ||
+          (direction_ == Direction::Down && newDirection == Direction::Up) ||
+          (direction_ == Direction::Left && newDirection == Direction::Right) ||
+          (direction_ == Direction::Right && newDirection == Direction::Left)))
+    {
+        direction_ = newDirection;
+    }
+
+	    // 处理鼠标点击
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+        sf::Vector2f headPosition = head_.getPosition();
+
+        float deltaX = mousePosition.x - headPosition.x;
+        float deltaY = mousePosition.y - headPosition.y;
+
+        if (std::abs(deltaX) > std::abs(deltaY))
+        {
+            if (deltaX > 0)
+                newDirection = Direction::Right;
+            else
+                newDirection = Direction::Left;
+        }
+        else
+        {
+            if (deltaY > 0)
+                newDirection = Direction::Down;
+            else
+                newDirection = Direction::Up;
+        }
+
+        if (!((direction_ == Direction::Up && newDirection == Direction::Down) ||
+              (direction_ == Direction::Down && newDirection == Direction::Up) ||
+              (direction_ == Direction::Left && newDirection == Direction::Right) ||
+              (direction_ == Direction::Right && newDirection == Direction::Left)))
+        {
+            direction_ = newDirection;
+        }
+    }
 }
+
 
 void Snake::update(sf::Time delta)
 {
@@ -115,33 +176,57 @@ bool Snake::hitSelf() const
 	return hitSelf_;
 }
 
+// void Snake::checkSelfCollisions()
+// {
+// 	SnakeNode& headNode = nodes_[0];
+
+// 	for (decltype(nodes_.size()) i = 1; i < nodes_.size(); ++i)
+// 	{
+// 		if (headNode.getBounds().intersects(nodes_[i].getBounds()))
+// 		{
+// 			dieSound_.play();
+// 			sf::sleep(sf::seconds(dieBuffer_.getDuration().asSeconds()));
+// 			hitSelf_ = true;
+// 		}
+// 	}
+// }
+
+// void Snake::checkEdgeCollisions()
+// {
+// 	SnakeNode& headNode = nodes_[0];
+
+// 	if (headNode.getPosition().x <= 0)
+// 		headNode.setPosition(Game::Width, headNode.getPosition().y);
+// 	else if (headNode.getPosition().x >= Game::Width)
+// 		headNode.setPosition(0, headNode.getPosition().y);
+// 	else if (headNode.getPosition().y <= 0)
+// 		headNode.setPosition(headNode.getPosition().x, Game::Height);
+// 	else if (headNode.getPosition().y >= Game::Height)
+// 		headNode.setPosition(headNode.getPosition().x, 0);
+// }
 void Snake::checkSelfCollisions()
 {
-	SnakeNode& headNode = nodes_[0];
-
-	for (decltype(nodes_.size()) i = 1; i < nodes_.size(); ++i)
-	{
-		if (headNode.getBounds().intersects(nodes_[i].getBounds()))
-		{
-			dieSound_.play();
-			sf::sleep(sf::seconds(dieBuffer_.getDuration().asSeconds()));
-			hitSelf_ = true;
-		}
-	}
+    for (decltype(nodes_.size()) i = 3; i < nodes_.size(); ++i)
+    {
+        if (head_.getGlobalBounds().intersects(nodes_[i].getBounds()))
+        {
+            printf("hit on %d\n",i);
+            dieSound_.play();
+            sf::sleep(sf::seconds(dieBuffer_.getDuration().asSeconds()));
+            hitSelf_ = true;
+        }
+    }
 }
-
 void Snake::checkEdgeCollisions()
 {
-	SnakeNode& headNode = nodes_[0];
-
-	if (headNode.getPosition().x <= 0)
-		headNode.setPosition(Game::Width, headNode.getPosition().y);
-	else if (headNode.getPosition().x >= Game::Width)
-		headNode.setPosition(0, headNode.getPosition().y);
-	else if (headNode.getPosition().y <= 0)
-		headNode.setPosition(headNode.getPosition().x, Game::Height);
-	else if (headNode.getPosition().y >= Game::Height)
-		headNode.setPosition(headNode.getPosition().x, 0);
+	if (head_.getPosition().x <= 0)
+		head_.setPosition(Game::Width, head_.getPosition().y);
+	else if (head_.getPosition().x >= Game::Width)
+		head_.setPosition(0, head_.getPosition().y);
+	else if (head_.getPosition().y <= 0)
+		head_.setPosition(head_.getPosition().x, Game::Height);
+	else if (head_.getPosition().y >= Game::Height)
+		head_.setPosition(head_.getPosition().x, 0);
 }
 
 void Snake::move()
@@ -150,26 +235,31 @@ void Snake::move()
 	{
 		nodes_[i].setPosition(nodes_.at(i - 1).getPosition());
 	}
-
+	// 问题：蛇头不会动 设置蛇头的位置为nodes_[0]的位置
+	if (!nodes_.empty()) {
+		nodes_[0].setPosition(head_.getPosition());
+	}
 	switch (direction_)
 	{
 	case Direction::Up:
-		nodes_[0].move(0, -SnakeNode::Height);
+		head_.move(0, -SnakeNode::Height);
 		break;
 	case Direction::Down:
-		nodes_[0].move(0, SnakeNode::Height);
+		head_.move(0, SnakeNode::Height);
 		break;
 	case Direction::Left:
-		nodes_[0].move(-SnakeNode::Width, 0);
+		head_.move(-SnakeNode::Width, 0);
 		break;
 	case Direction::Right:
-		nodes_[0].move(SnakeNode::Width, 0);
+		head_.move(SnakeNode::Width, 0);
 		break;
 	}
 }
 
 void Snake::render(sf::RenderWindow& window)
 {
+	// head_.setTexture(texture,true);
+	window.draw(head_);
 	for (auto node : nodes_)
 		node.render(window);
 }
