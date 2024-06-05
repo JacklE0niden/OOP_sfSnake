@@ -20,10 +20,21 @@ public:
 	void render(sf::RenderWindow& window) override;
 
 	void generateFruit();
+	void updateScore();
+
+	void renderBonusTimer(sf::RenderWindow& window, const Fruit& fruit);
 
 private:
 	Snake snake_;
 	std::vector<Fruit> fruit_;
+	//每隔一定的长度生成一个额外的奖励果实（基于蛇的长度来确定）
+
+	int score{0};
+	sf::Font font_;
+	sf::Text text_;
+
+
+	int flag{1};
 };
 }
 

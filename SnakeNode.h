@@ -22,11 +22,20 @@ public:
 	sf::FloatRect getBounds() const;
 
 	static const float Width;
-	static const float Height;
+	static const int HEIGHT = 10;
 
 private:
-	sf::RectangleShape shape_;
+	sf::RectangleShape rec_shape_;
+	sf::CircleShape cir_shape_;
+	// sf::RectangleShape shape_;
 	sf::Vector2f position_;
+	
+	// newly added
+	//为蛇节点着色、添加纹理和设置方向（角度）
+	double angle_;
+
+	sf::Color fillcolor[6]={sf::Color::Red,sf::Color::Green,sf::Color::Blue,sf::Color(255,0,255),sf::Color(0,255,255),sf::Color(255,255,0)};
+	sf::Texture texture;
 };
 }
 

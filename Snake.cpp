@@ -3,7 +3,7 @@
 #include <SFML/Audio.hpp>
 #include <memory>
 #include <iostream>
-
+#include <cmath>
 #include "Snake.h"
 #include "Game.h"
 #include "Fruit.h"
@@ -14,17 +14,17 @@ using namespace sfSnake;
 
 const int Snake::InitialSize = 5;
 
-Snake::Snake() : direction_(Direction::Up), hitSelf_(false)
+Snake::Snake() : direction_(Direction::Up), hitSelf_(false), score_(0)  // 初始化分数
 {
-	initNodes();
+    initNodes();
 
-	pickupBuffer_.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/Sounds/pickup.wav");
-	pickupSound_.setBuffer(pickupBuffer_);
-	pickupSound_.setVolume(30);
+    pickupBuffer_.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/Sounds/pickup.wav");
+    pickupSound_.setBuffer(pickupBuffer_);
+    pickupSound_.setVolume(30);
 
-	dieBuffer_.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/Sounds/die.wav");
-	dieSound_.setBuffer(dieBuffer_);
-	dieSound_.setVolume(50);
+    dieBuffer_.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/Sounds/die.wav");
+    dieSound_.setBuffer(dieBuffer_);
+    dieSound_.setVolume(50);
 }
 
 //初始化蛇的节点，这里的蛇的节点是一个vector，里面存放了很多个SnakeNode对象
@@ -33,25 +33,26 @@ void Snake::initNodes()
 {
     texture.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/snake_head.png");
 
+    // 假设蛇头图片较大，需要根据图片尺寸进行调整
+    sf::Vector2u textureSize = texture.getSize();
+    float scale = 0.5f; // 缩放比例
 
-    // 设置第一个节点的位置，使其不与蛇头重叠
-    for (int i = 0; i < Snake::InitialSize; ++i)
+    // 设置蛇头的缩放比例
+    head_.setTexture(texture);
+    head_.setScale(scale, scale);
+
+    // 设置蛇头的位置
+    head_.setPosition(sf::Vector2f(
+        Game::Width / 2 - (textureSize.x * scale) / 2,
+        Game::Height / 2 - (textureSize.y * scale) / 2));
+
+    // 初始化蛇身节点
+    for (int i = 1; i < Snake::InitialSize; ++i)
     {
-		if (i==0)
-		{
-			head_.setTexture(texture);
-			head_.setScale(0.5, 0.5);
-    		// 设置蛇头的位置
-    		head_.setPosition(sf::Vector2f(
-        	Game::Width / 2 - SnakeNode::Width / 2,
-        	Game::Height / 2 - SnakeNode::Height / 2));
-		}
-		else{ // 蛇头已经单独处理，所以从第二个节点开始处理
-			nodes_.push_back(SnakeNode(sf::Vector2f(
-			Game::Width / 2 - SnakeNode::Width / 2,
-			Game::Height / 2 + (SnakeNode::Height * (i + 1)) - SnakeNode::Height / 2)));
-		}
-        
+        SnakeNode node(sf::Vector2f(
+            Game::Width / 2 - SnakeNode::Width / 2,
+            Game::Height / 2 + (SnakeNode::HEIGHT * (i + 1)) - SnakeNode::HEIGHT / 2));
+        nodes_.push_back(node);
     }
 }
 
@@ -125,21 +126,36 @@ void Snake::update(sf::Time delta)
 
 void Snake::checkFruitCollisions(std::vector<Fruit>& fruits)
 {
-	decltype(fruits.begin()) toRemove = fruits.end();
+    decltype(fruits.begin()) toRemove = fruits.end();
 
-	for (auto it = fruits.begin(); it != fruits.end(); ++it)
-	{
-		if (it->getBounds().intersects(nodes_[0].getBounds()))
-			toRemove = it;
-	}
+    for (auto it = fruits.begin(); it != fruits.end(); ++it)
+    {
+        if (it->getBounds().intersects(nodes_[0].getBounds()))
+        {
+            toRemove = it;
 
-	if (toRemove != fruits.end())
-	{
-		pickupSound_.play();
-		grow();
-		fruits.erase(toRemove);
-	}
-	// TODO: Add visual feedback when the snake eats a fruit.
+            // 根据水果类型更新分数
+            score_ += it->isBonus() ? 10 : 1;
+
+            // 如果是奖励水果，应用减分速率
+            if (it->isBonus())
+            {
+                // 计算减分速率
+                float decrementRate = 10.f / it->getRemainingTime();
+
+                // 减去减分速率
+                score_ -= static_cast<int>(decrementRate);
+            }
+        }
+    }
+
+    if (toRemove != fruits.end())
+    {
+        pickupSound_.play();
+        grow();
+        fruits.erase(toRemove);
+    }
+	//TODO: 给吃到水果之后给到一个反馈
 }
 
 // 在移动方向的尾部添加一个节点
@@ -149,11 +165,11 @@ void Snake::grow()
 	{
 	case Direction::Up:
 		nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x,
-			nodes_[nodes_.size() - 1].getPosition().y + SnakeNode::Height)));
+			nodes_[nodes_.size() - 1].getPosition().y + SnakeNode::HEIGHT)));
 		break;
 	case Direction::Down:
 		nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x,
-			nodes_[nodes_.size() - 1].getPosition().y - SnakeNode::Height)));
+			nodes_[nodes_.size() - 1].getPosition().y - SnakeNode::HEIGHT)));
 		break;
 	case Direction::Left:
 		nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x + SnakeNode::Width,
@@ -175,6 +191,12 @@ bool Snake::hitSelf() const
 {
 	return hitSelf_;
 }
+
+unsigned Snake::getScore() const
+{
+	return score_;
+}
+
 
 // void Snake::checkSelfCollisions()
 // {
@@ -242,10 +264,10 @@ void Snake::move()
 	switch (direction_)
 	{
 	case Direction::Up:
-		head_.move(0, -SnakeNode::Height);
+		head_.move(0, -SnakeNode::HEIGHT);
 		break;
 	case Direction::Down:
-		head_.move(0, SnakeNode::Height);
+		head_.move(0, SnakeNode::HEIGHT);
 		break;
 	case Direction::Left:
 		head_.move(-SnakeNode::Width, 0);

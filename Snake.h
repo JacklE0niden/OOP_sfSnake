@@ -30,35 +30,30 @@ public:
 	void render(sf::RenderWindow& window);
 
 	void checkFruitCollisions(std::vector<Fruit>& fruits);
+	// 单独弄了一个蛇头
 	sf::Sprite head(){return head_;};
 	bool hitSelf() const;
 
 	unsigned getSize() const;
+	unsigned getScore() const;
 
 private:
-	void move();
-	void grow();
-	void checkEdgeCollisions();
-	void checkSelfCollisions();
-	void initNodes();
+    void move();
+    void grow();
+    void checkSelfCollisions();
+    void checkEdgeCollisions();
+    void initNodes();
 
-	bool hitSelf_;
-
-	sf::Vector2f position_;
-	Direction direction_;
-
-	sf::SoundBuffer pickupBuffer_;
-	sf::Sound pickupSound_;
-
-	sf::SoundBuffer dieBuffer_;
-	sf::Sound dieSound_;
-
-	//设置蛇头的纹理
-	sf::Texture texture;
-	sf::Sprite head_;
-
-	std::vector<SnakeNode> nodes_;
-
+    std::vector<SnakeNode> nodes_;
+    sf::Sprite head_;
+    sf::Texture texture;
+    sf::SoundBuffer pickupBuffer_;
+    sf::SoundBuffer dieBuffer_;
+    sf::Sound pickupSound_;
+    sf::Sound dieSound_;
+    Direction direction_;
+    bool hitSelf_;
+    int score_;  // 新增分数成员变量
 	static const int InitialSize;
 };
 }
