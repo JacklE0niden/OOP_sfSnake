@@ -3,11 +3,12 @@
 // #include <SFML/include/SFML/Audio.hpp>
 #include <random>
 #include <memory>
+#include <iostream>
 
 #include "GameScreen.h"
 #include "GameOverScreen.h"
 #include "Game.h"
-#define FRUITNUM 1
+#define COMMON_FRUITNUM 1
 const float CIR_WIDTH=20.f;
 
 using namespace sfSnake;
@@ -24,7 +25,7 @@ GameScreen::GameScreen() : snake_(), flag(1), score(0)
 {
     font_.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/Fonts/ARLRDBD.TTF");
     text_.setFont(font_);
-    text_.setCharacterSize(24); // Set the character size
+    text_.setCharacterSize(16); // Set the character size
     text_.setFillColor(sf::Color::White); // Set the text color
     updateScore(); // Ensure the score text is set initially
     sf::FloatRect textBounds = text_.getLocalBounds();
@@ -43,8 +44,8 @@ void GameScreen::handleInput(sf::RenderWindow& window)
 //更新游戏状态，蛇移动、水果生成、碰撞检测
 void GameScreen::update(sf::Time delta)
 {
-    if (fruit_.size() < 1)
-        generateFruit();
+    // if (countCommonFruits()<COMMON_FRUITNUM)
+    generateFruit();
 
     // Update all fruits' state
     for (auto& fruit : fruit_) {
@@ -59,8 +60,7 @@ void GameScreen::update(sf::Time delta)
     fruit_.erase(std::remove_if(fruit_.begin(), fruit_.end(),
                                 [](const Fruit& fruit) { return fruit.isExpired(); }),
                  fruit_.end());
-
-
+                 
     if (snake_.hitSelf()) {
         flag = 1;
 		printf("GAME OVER!");
@@ -82,9 +82,9 @@ void GameScreen::render(sf::RenderWindow& window)
 {
     snake_.render(window);
     window.draw(text_);
-    for (auto fruit : fruit_) {
+    for (auto& fruit : fruit_) { // Use auto& to avoid copying
         fruit.render(window);
-        renderBonusTimer(window, fruit); // Render bonus fruit timer
+        renderBonusTimer(window, fruit);
     }
 }
 void GameScreen::renderBonusTimer(sf::RenderWindow& window, const Fruit& fruit)
@@ -113,20 +113,23 @@ void GameScreen::generateFruit()
 	static std::mt19937 cd_make(std::random_device{}());
 
 	cd_make.seed(time(NULL));
-	int brown_record=0;
-	int black_record=0;
-	while(fruit_.size()<FRUITNUM){
-		if(fruit_.size()==0){
-			fruit_.push_back(Fruit(sf::Vector2f(xDistribution(cd_make), yDistribution(cd_make))));
-		}
-		for(auto record : fruit_){
-			if(record.color()==sf::Color(128,64,0)){
-				brown_record++;
-			}
-			if(record.color()==sf::Color::Black){
-				black_record++;
-			}
-		}
+	// int brown_record=0;
+	// int black_record=0;
+    int commonFruitCount = countCommonFruits();
+    // std::cout<<"commonFruitCount1 = "<<commonFruitCount<<std::endl;
+	while(countCommonFruits()<COMMON_FRUITNUM){
+		
+		fruit_.push_back(Fruit(sf::Vector2f(xDistribution(cd_make), yDistribution(cd_make))));
+        // std::cout<<"commonFruitCount2 = "<<countCommonFruits()<<std::endl;
+
+		// for(auto record : fruit_){
+		// 	if(record.color()==sf::Color(128,64,0)){
+		// 		brown_record++;
+		// 	}
+		// 	if(record.color()==sf::Color::Black){
+		// 		black_record++;
+		// 	}
+		// }
 		// while(brown_record+black_record!=5){
 		// 	fruit_.push_back(Fruit(sf::Vector2f(xDistribution(cd_make), yDistribution(cd_make))));
 		// 	if (colorForm(cd_make))
@@ -144,16 +147,45 @@ void GameScreen::generateFruit()
 		// 	fruit_.push_back(Fruit(sf::Vector2f(xDistribution(cd_make), yDistribution(cd_make))));
 		// }
 
-		while(snake_.getSize() > flag*8){
-			Fruit bonus = Fruit(sf::Vector2f(xDistribution(cd_make), yDistribution(cd_make)));
-			bonus.BonusFruit();
-			bonus.makeBonus();
-			fruit_.push_back(bonus);
+		while(snake_.getcurrenteaten() >= bonusFruitInterval_){
+            snake_.setcurrenteaten(0);
+            if(countBonusFruits() > 0) {
+                break;
+            }
+            else{
+                Fruit bonus = Fruit(sf::Vector2f(xDistribution(cd_make), yDistribution(cd_make)));
+                bonus.BonusFruit();
+                // bonus.makeBonus();
+                fruit_.push_back(bonus);
 
-			flag++;
+                flag++;
+            }
 		}
 	}
 }
+
+int GameScreen::countCommonFruits() const
+{
+    int count = 0;
+    for (const auto& fruit : fruit_) {
+        if (!fruit.isBonus()) {
+            ++count;
+        }
+    }
+    return count;
+}
+
+int GameScreen::countBonusFruits() const
+{
+    int count = 0;
+    for (const auto& fruit : fruit_) {
+        if (fruit.isBonus()) {
+            ++count;
+        }
+    }
+    return count;
+}
+
 void GameScreen::updateScore()
 {
     score = snake_.getScore();

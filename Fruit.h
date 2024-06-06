@@ -26,7 +26,7 @@ public:
     // 是否为奖励的额外果实
     void BonusFruit();
     bool isBonus() const { return isBonus_; }
-    void makeBonus();
+    // void makeBonus();
 
     // 重载==运算符
     bool operator==(const Fruit& other);
@@ -47,7 +47,7 @@ private:
     bool isBonus_;
 
 	sf::Clock bonusClock_;
-    sf::Time bonusLifetime_ = sf::seconds(10);
+    sf::Time bonusLifetime_;
 };
 }
 

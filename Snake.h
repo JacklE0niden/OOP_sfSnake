@@ -37,6 +37,10 @@ public:
 	unsigned getSize() const;
 	unsigned getScore() const;
 
+    void setcurrenteaten(int currenteaten){currenteaten_ = currenteaten;}
+    void addcurrenteaten(){currenteaten_++;} // 新增加分数的函数
+    int getcurrenteaten(){return currenteaten_;}
+
 private:
     void move();
     void grow();
@@ -54,6 +58,7 @@ private:
     Direction direction_;
     bool hitSelf_;
     int score_;  // 新增分数成员变量
+    int currenteaten_{0};
 	static const int InitialSize;
 };
 }

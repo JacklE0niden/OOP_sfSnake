@@ -18,11 +18,14 @@ public:
 
 	void render(sf::RenderWindow& window);
 
+	void update(sf::Time delta);
+
 	sf::Vector2f getPosition() const;
 	sf::FloatRect getBounds() const;
 
 	static const float Width;
 	static const int HEIGHT = 10;
+	// float timeOffset_;
 
 private:
 	sf::RectangleShape rec_shape_;
@@ -32,7 +35,10 @@ private:
 	
 	// newly added
 	//为蛇节点着色、添加纹理和设置方向（角度）
-	double angle_;
+    float angle_;
+    float timeOffset_;
+
+	// static const float radius;
 
 	sf::Color fillcolor[6]={sf::Color::Red,sf::Color::Green,sf::Color::Blue,sf::Color(255,0,255),sf::Color(0,255,255),sf::Color(255,255,0)};
 	sf::Texture texture;

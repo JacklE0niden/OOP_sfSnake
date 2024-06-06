@@ -134,17 +134,19 @@ void Snake::checkFruitCollisions(std::vector<Fruit>& fruits)
         {
             toRemove = it;
 
-            // 根据水果类型更新分数
             score_ += it->isBonus() ? 10 : 1;
 
-            // 如果是奖励水果，应用减分速率
             if (it->isBonus())
             {
-                // 计算减分速率
-                float decrementRate = 10.f / it->getRemainingTime();
-
-                // 减去减分速率
+                float remainingTime = it->getRemainingTime();
+                if (remainingTime < 0) remainingTime = 0; // Ensure positive time
+                float decrementRate = 10.f - remainingTime;
+                std::cout << "Remaining Time: " << remainingTime << " Decrement Rate: " << decrementRate << std::endl;
                 score_ -= static_cast<int>(decrementRate);
+            }
+            else{
+                addcurrenteaten();
+                std::cout<<"currenteaten = "<<currenteaten_<<std::endl;
             }
         }
     }
@@ -155,7 +157,6 @@ void Snake::checkFruitCollisions(std::vector<Fruit>& fruits)
         grow();
         fruits.erase(toRemove);
     }
-	//TODO: 给吃到水果之后给到一个反馈
 }
 
 // 在移动方向的尾部添加一个节点
