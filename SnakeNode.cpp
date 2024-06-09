@@ -16,7 +16,7 @@ static std::uniform_int_distribution colornum(0, 5);
 
 const float SnakeNode::Width = 10.f;
 // const float SnakeNode::Height = 10.f;
-
+const float SnakeNode::radius = 5.f;
 //接受一个 sf::Vector2f 类型的参数 position，表示节点的初始位置
 SnakeNode::SnakeNode(sf::Vector2f position)
     : position_(position), angle_(0.f), timeOffset_(0.f)
@@ -24,6 +24,7 @@ SnakeNode::SnakeNode(sf::Vector2f position)
 	cir_shape_.setPosition(position_);
 	cir_shape_.setRadius(radius);
 	cir_shape_.setFillColor(fillcolor[colornum(random)]);
+    // cir_shape_.setOrigin(radius, radius); // 设置圆心为中心
 
 	//sf::Texture texture;
     // if (!texture.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/snakenode.png")) {
@@ -32,6 +33,8 @@ SnakeNode::SnakeNode(sf::Vector2f position)
 
 	rec_shape_.setPosition(sf::Vector2f(position.x+1.34,position.y+1.0*radius/2));
 	rec_shape_.setSize(sf::Vector2f(WIDTH,HEIGHT));
+    rec_shape_.setFillColor(sf::Color::Transparent); // Set to transparent
+    // rec_shape_.setOrigin(Width / 2, HEIGHT / 2);
 	// rec_shape_.setTexture(&texture,true);
 	//rec_shape_.setFillColor(fillcolor[colornum(random)]);
 }
@@ -40,6 +43,7 @@ void SnakeNode::setPosition(sf::Vector2f position)
 {
     position_ = position;
     cir_shape_.setPosition(position_);
+    // 计算矩形位置：相对于圆心的偏移 + 蛇头位置
     rec_shape_.setPosition(sf::Vector2f(position_.x + cos((angle_ + Pi / 2 - atan(radius * (1 - 0.866) / 5))) * 0.5176 * radius,
                                         position_.y + sin((angle_ + Pi / 2 - atan(radius * (1 - 0.866) / 5))) * 0.5176 * radius));
 }
@@ -60,16 +64,7 @@ void SnakeNode::setPosition(sf::Vector2f position)
 
 void SnakeNode::update(sf::Time delta)
 {
-    timeOffset_ += delta.asSeconds();
-    float offsetX = 1.f * std::sin(timeOffset_ * 3); // 控制扭动幅度和速度
-    float offsetY = 1.f * std::cos(timeOffset_ * 3);
-    position_ += sf::Vector2f(offsetX, offsetY);
-
-    // 更新形状的位置
-    setPosition(position_);
-
-    // 更新旋转角度
-    angle_ += delta.asSeconds() * 180.f / Pi; // 控制旋转速度
+    // 这里不进行位置和角度的更新，保持原始状态
 }
 
 
@@ -87,8 +82,8 @@ sf::Vector2f SnakeNode::getPosition() const
 void SnakeNode::render(sf::RenderWindow& window)
 {
 	// rec_shape_.setTexture(&texture,true);
-	cir_shape_.setRotation(angle_/Pi*180);
-	rec_shape_.setRotation(angle_/Pi*180);
+	// cir_shape_.setRotation(angle_);
+	// rec_shape_.setRotation(angle_);
 	window.draw(cir_shape_);
 	window.draw(rec_shape_);
 } 

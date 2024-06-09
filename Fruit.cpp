@@ -35,7 +35,12 @@ sf::FloatRect Fruit::getBounds() const
 //更改对象为一个Bonus水果
 void Fruit::BonusFruit()
 {
-    shape_.setFillColor(sf::Color::Yellow); // 将奖励水果设置为黄色
+    shape_.setFillColor(sf::Color::Red); // 将奖励水果设置为红色
+    // 为奖励水果加载纹理
+    if (!texture_.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/apple.png")) {
+        std::cerr << "Failed to load texture" << std::endl;
+    }
+    shape_.setTexture(&texture_,true);
     Fruit::Radius = 15.0f; // 奖励水果半径
     shape_.setRadius(Fruit::Radius);
     isBonus_ = true; // 设置为奖励水果
@@ -47,18 +52,6 @@ bool Fruit::operator==(const Fruit& other)
 {
     return shape_.getPosition() == other.shape_.getPosition() && color_ == other.color_;
 }
-
-
-// void Fruit::makeBonus()
-// {
-//     isBonus_ = true;
-//     shape_.setFillColor(sf::Color::Magenta);
-//     Radius = 10.f;
-//     shape_.setRadius(Radius);
-//     bonusLifetime_ = sf::seconds(10);
-//     bonusClock_.restart();
-// }
-
 
 void Fruit::update()
 {
@@ -75,9 +68,10 @@ bool Fruit::isExpired() const
 {
     // std::cout<<"isBonus_:"<<isBonus_<<"bonusClock_.getElapsedTime():"<<bonusClock_.getElapsedTime().asSeconds()<<"bonusLifetime_:"<<bonusLifetime_.asSeconds()<<std::endl;
     if (isBonus_) {
-        std::cout <<"bonusclock:"<<bonusClock_.getElapsedTime().asSeconds() << "bonuslifetime:"<<bonusLifetime_.asSeconds()<<std::endl;
+        // Debugging
+        // std::cout <<"bonusclock:"<<bonusClock_.getElapsedTime().asSeconds() << "bonuslifetime:"<<bonusLifetime_.asSeconds()<<std::endl;
         if(bonusClock_.getElapsedTime() > bonusLifetime_){
-            std::cout<<"bonus is expired"<<std::endl;
+            // std::cout<<"bonus is expired"<<std::endl;
             return true;
         }
     }
@@ -90,7 +84,7 @@ float Fruit::getRemainingTime() const
     if (isBonus_) {
         float remainingTime = bonusLifetime_.asSeconds() - bonusClock_.getElapsedTime().asSeconds();
         
-        // std::cout << "Remaining Time: " << remainingTime << std::endl; // Debugging
+        // std::cout << "Remaining Time: " << Time << std::endl; // Debugging
         return remainingTime;
     }
     return 0.f;

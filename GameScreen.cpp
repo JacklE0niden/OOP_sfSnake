@@ -18,6 +18,10 @@ static std::uniform_int_distribution<int> xDistribution(0, Game::Width - CIR_WID
 static std::uniform_int_distribution<int> yDistribution(0, Game::Height - SnakeNode ::HEIGHT);
 static std::uniform_int_distribution<int> colorForm(0,1);
 
+std::string background_net_choose[4]={
+	"C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background1.png",
+    "C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background2.jpg","C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background3.jpg"};
+
 using namespace sfSnake;
 
 //创建蛇对象
@@ -80,6 +84,40 @@ void GameScreen::update(sf::Time delta)
 //增加了一个进度条，表示bonus水果
 void GameScreen::render(sf::RenderWindow& window)
 {
+    // newlyy added 渲染背景
+	static int records=0;
+	static std::string* background=background_net_choose;
+    sf::Texture tex; 
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
+		sf::sleep(sf::seconds(0.1));
+		records++;
+		records%=3;
+		tex.loadFromFile(background[records]);
+		tex.setRepeated(true);
+	}
+	// if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
+	// 	sf::sleep(sf::seconds(0.1));
+	// 	if(background == background_blank_choose){
+	// 		background=background_net_choose;
+	// 	}
+	// 	else{
+	// 		background=background_blank_choose;
+	// 	}
+	// 	tex.loadFromFile(background[records]);
+	// 	tex.setRepeated(true);
+	// }
+	else{
+		tex.loadFromFile(background[records]);
+		tex.setRepeated(true);
+	}
+	sf::RectangleShape rectangle(sf::Vector2f(640,480));
+	rectangle.setTextureRect(sf::IntRect(0,0,640,480));
+    rectangle.setTexture(&tex);
+	rectangle.setOutlineColor(sf::Color::Yellow);
+    rectangle.setOutlineThickness(5);
+	rectangle.setPosition(sf::Vector2f(0,0));
+	window.draw(rectangle); 
+
     snake_.render(window);
     window.draw(text_);
     for (auto& fruit : fruit_) { // Use auto& to avoid copying

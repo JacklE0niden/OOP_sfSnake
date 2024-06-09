@@ -146,7 +146,7 @@ void Snake::checkFruitCollisions(std::vector<Fruit>& fruits)
             }
             else{
                 addcurrenteaten();
-                std::cout<<"currenteaten = "<<currenteaten_<<std::endl;
+                // std::cout<<"currenteaten = "<<currenteaten_<<std::endl;
             }
         }
     }

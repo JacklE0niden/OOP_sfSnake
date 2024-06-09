@@ -29,6 +29,9 @@ public:
 
 	//蛇节点移动
 	void generateSnake();
+
+
+
 private:
 	Snake snake_;
 	std::vector<Fruit> fruit_;

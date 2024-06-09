@@ -38,7 +38,7 @@ private:
     float angle_;
     float timeOffset_;
 
-	// static const float radius;
+	static const float radius;
 
 	sf::Color fillcolor[6]={sf::Color::Red,sf::Color::Green,sf::Color::Blue,sf::Color(255,0,255),sf::Color(0,255,255),sf::Color(255,255,0)};
 	sf::Texture texture;
