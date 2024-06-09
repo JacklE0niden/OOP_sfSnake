@@ -35,7 +35,8 @@ public:
     void update();
     bool isExpired() const;
   	// 获取剩余时间
-    float getRemainingTime() const;
+    int getRemainingframe() const;
+    static const int BonusLifetimeFrames = 150;
 
 private:
     sf::CircleShape shape_;
@@ -47,7 +48,12 @@ private:
     bool isBonus_;
 
 	sf::Clock bonusClock_;
-    sf::Time bonusLifetime_;
+    // 只要保留一个
+    int bonusLifetimeFrames_;
+    
+
+    //让fruit知道一个游戏对象
+    // Game& game_;
 };
 }
 

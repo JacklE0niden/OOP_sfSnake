@@ -134,15 +134,17 @@ void Snake::checkFruitCollisions(std::vector<Fruit>& fruits)
         {
             toRemove = it;
 
-            score_ += it->isBonus() ? 10 : 1;
+            score_ += it->isBonus() ? 100 : 1;
 
             if (it->isBonus())
             {
-                float remainingTime = it->getRemainingTime();
-                if (remainingTime < 0) remainingTime = 0; // Ensure positive time
-                float decrementRate = 10.f - remainingTime;
-                std::cout << "Remaining Time: " << remainingTime << " Decrement Rate: " << decrementRate << std::endl;
-                score_ -= static_cast<int>(decrementRate);
+                float remainingframe = it->getRemainingframe();
+                if (remainingframe < 0) remainingframe = 0; // Ensure positive time
+                int decrementRate = it->BonusLifetimeFrames - remainingframe;
+                float decrementScale = decrementRate / 1.5;
+                std::cout << "Remaining Time: " << remainingframe << " Decrement Rate: " << decrementRate << std::endl;
+                // std::cout << "Remaining Time: " << remainingTime << " Decrement Rate: " << decrementRate << std::endl;
+                score_ -= static_cast<int>(decrementScale);
             }
             else{
                 addcurrenteaten();

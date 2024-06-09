@@ -31,6 +31,12 @@ void Game::sethighframe(){
 	TimePerFrame = sf::seconds(1.f / 10.f);
 }
 
+const sf::Time Game::getTimePerFrame()
+{
+    return TimePerFrame;
+}
+
+
 void Game::handleInput()
 {
 	sf::Event event;

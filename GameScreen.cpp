@@ -8,7 +8,7 @@
 #include "GameScreen.h"
 #include "GameOverScreen.h"
 #include "Game.h"
-#define COMMON_FRUITNUM 1
+#define COMMON_FRUITNUM 20
 const float CIR_WIDTH=20.f;
 
 using namespace sfSnake;
@@ -18,9 +18,13 @@ static std::uniform_int_distribution<int> xDistribution(0, Game::Width - CIR_WID
 static std::uniform_int_distribution<int> yDistribution(0, Game::Height - SnakeNode ::HEIGHT);
 static std::uniform_int_distribution<int> colorForm(0,1);
 
-std::string background_net_choose[4]={
+std::string background_blank_choose[3]={
 	"C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background1.png",
-    "C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background2.jpg","C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background3.jpg"};
+    "C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background2.png","C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background3.png"};
+
+std::string background_net_choose[3]={
+	"C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background_grid1.png",
+    "C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background_grid2.png","C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background_grid3.png"};
 
 using namespace sfSnake;
 
@@ -30,7 +34,7 @@ GameScreen::GameScreen() : snake_(), flag(1), score(0)
     font_.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/Fonts/ARLRDBD.TTF");
     text_.setFont(font_);
     text_.setCharacterSize(16); // Set the character size
-    text_.setFillColor(sf::Color::White); // Set the text color
+    text_.setFillColor(sf::Color(255, 165, 0));
     updateScore(); // Ensure the score text is set initially
     sf::FloatRect textBounds = text_.getLocalBounds();
     text_.setOrigin(textBounds.left + textBounds.width / 2,
@@ -85,27 +89,27 @@ void GameScreen::update(sf::Time delta)
 void GameScreen::render(sf::RenderWindow& window)
 {
     // newlyy added 渲染背景
-	static int records=0;
-	static std::string* background=background_net_choose;
+    static int records=0;
+	static std::string* background=background_blank_choose;
     sf::Texture tex; 
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
 		sf::sleep(sf::seconds(0.1));
 		records++;
 		records%=3;
 		tex.loadFromFile(background[records]);
 		tex.setRepeated(true);
 	}
-	// if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
-	// 	sf::sleep(sf::seconds(0.1));
-	// 	if(background == background_blank_choose){
-	// 		background=background_net_choose;
-	// 	}
-	// 	else{
-	// 		background=background_blank_choose;
-	// 	}
-	// 	tex.loadFromFile(background[records]);
-	// 	tex.setRepeated(true);
-	// }
+	else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
+		sf::sleep(sf::seconds(0.1));
+		if(background == background_blank_choose){
+			background=background_net_choose;
+		}
+		else{
+			background=background_blank_choose;
+		}
+		tex.loadFromFile(background[records]);
+		tex.setRepeated(true);
+	}
 	else{
 		tex.loadFromFile(background[records]);
 		tex.setRepeated(true);
@@ -129,8 +133,9 @@ void GameScreen::renderBonusTimer(sf::RenderWindow& window, const Fruit& fruit)
 {
     if (fruit.isBonus()) {
         // 计算 BonusFruit 剩余时间的比例
-        float remainingTime = fruit.getRemainingTime();
-        float progress = remainingTime / 10.;
+        float remainingframe = fruit.getRemainingframe();
+        // std::cout<<"remainingframe = "<<remainingframe<<std::endl;
+        float progress = remainingframe / fruit.BonusLifetimeFrames;
 
         // 计算进度条的宽度
         float progressBarWidth = Game::Width * progress;

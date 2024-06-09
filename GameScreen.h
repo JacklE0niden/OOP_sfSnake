@@ -36,7 +36,7 @@ private:
 	Snake snake_;
 	std::vector<Fruit> fruit_;
 	//每隔一定的长度生成一个额外的奖励果实（基于蛇的长度来确定）
-	int bonusFruitInterval_{2};
+	int bonusFruitInterval_{8};
 	//当前吃的普通水果数量
 	int currenteaten_{0};
 

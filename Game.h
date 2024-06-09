@@ -23,6 +23,7 @@ public:
 	void render();
 	void setlowframe();
 	void sethighframe();
+	const sf::Time getTimePerFrame();
 
 	static const int Width = 640;
 	static const int Height = 480;
