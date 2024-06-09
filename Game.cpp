@@ -1,25 +1,34 @@
 #include <SFML/Graphics.hpp>
-// #include <SFML/include/SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
+//#include"stopwatch.h"
 #include <memory>
-
+//#include<iostream>
 #include "MenuScreen.h"
 #include "Game.h"
+#include "GameScreen.h"
 
 using namespace sfSnake;
-
-const sf::Time Game::TimePerFrame = sf::seconds(1.f / 10.f);
 
 std::shared_ptr<Screen> Game::Screen = std::make_shared<MenuScreen>();
 
 Game::Game()
-: window_(sf::VideoMode(Game::Width, Game::Height), "sfSnake") //VideoMode构造函数的用法
+: window_(sf::VideoMode(Game::Width, Game::Height), "sfSnake")
 {
+	
+	TimePerFrame = sf::seconds(1.f / 10.f);
+}
 
-	sf::Music bgMusic;
-	bgMusic_.openFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/Music/bg_music.wav");
+void Game::playmusic(){
+    bgMusic_.openFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/Music/bg_music.wav");
 	bgMusic_.setLoop(true);
 	bgMusic_.play();
+}
+
+void Game::setlowframe(){
+	TimePerFrame = sf::seconds(1.f / 5.f);
+}
+
+void Game::sethighframe(){
+	TimePerFrame = sf::seconds(1.f / 10.f);
 }
 
 void Game::handleInput()
@@ -47,26 +56,36 @@ void Game::render()
 	window_.display();
 }
 
-// 运行游戏主循环
 void Game::run()
 {
 	sf::Clock clock;
-	// 记录自上次更新以来经过的时间，初始值为零
-	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+	
+    sf::Time timeSinceLastUpdate = sf::Time::Zero;
+    sf::Time speedIncreaseInterval = sf::seconds(5.f);
+    sf::Time timeSinceLastSpeedIncrease = sf::Time::Zero;
 
-	while (window_.isOpen())
-	{
-		sf::Time delta = clock.restart();
-		timeSinceLastUpdate += delta;
+    while (window_.isOpen())
+    {
+        sf::Time delta = clock.restart();
+        timeSinceLastUpdate += delta;
+        timeSinceLastSpeedIncrease += delta;
 
-		while (timeSinceLastUpdate > Game::TimePerFrame)
-		{
-			//每一帧的时间间隔，处理用户输入，更新游戏状态
-			timeSinceLastUpdate -= TimePerFrame;
-			handleInput();
-			update(TimePerFrame);
-		}
+        while (timeSinceLastUpdate > Game::TimePerFrame)
+        {
+            timeSinceLastUpdate -= TimePerFrame;
+            handleInput();
+            update(TimePerFrame);
+        }
 
-		render();
-	}
+        render();
+
+        if (timeSinceLastSpeedIncrease > speedIncreaseInterval)
+        {
+            timeSinceLastSpeedIncrease -= speedIncreaseInterval;
+            if (Game::TimePerFrame > sf::seconds(1.f / 30.f))
+            {
+                Game::TimePerFrame -= sf::seconds(0.01f);
+            }
+        }
+    }
 }

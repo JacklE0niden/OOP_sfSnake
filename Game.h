@@ -3,8 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-// #include <SFML/include/SFML/Graphics.hpp>
-// #include <SFML/include/SFML/Audio.hpp>
+
 #include <vector>
 #include <memory>
 
@@ -18,10 +17,12 @@ public:
 	Game();
 
 	void run();
-
+	void playmusic();
 	void handleInput();
 	void update(sf::Time delta);
 	void render();
+	void setlowframe();
+	void sethighframe();
 
 	static const int Width = 640;
 	static const int Height = 480;
@@ -31,8 +32,8 @@ public:
 private:
 	sf::RenderWindow window_;
 	sf::Music bgMusic_;
-	
-	static const sf::Time TimePerFrame;
+	//float framerate;
+	sf::Time TimePerFrame;
 };
 }
 
