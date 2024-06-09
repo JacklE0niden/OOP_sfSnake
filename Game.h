@@ -21,8 +21,10 @@ public:
 	void handleInput();
 	void update(sf::Time delta);
 	void render();
-	void setlowframe();
-	void sethighframe();
+	static void setlowframe();
+	static void sethighframe();
+	static sf::Time TimePerFrame;
+
 	const sf::Time getTimePerFrame();
 
 	static const int Width = 640;
@@ -34,7 +36,7 @@ private:
 	sf::RenderWindow window_;
 	sf::Music bgMusic_;
 	//float framerate;
-	sf::Time TimePerFrame;
+	
 };
 }
 

@@ -40,6 +40,16 @@ GameScreen::GameScreen() : snake_(), flag(1), score(0)
     text_.setOrigin(textBounds.left + textBounds.width / 2,
                     textBounds.top + textBounds.height / 2);
     text_.setPosition(Game::Width / 2, Game::Height / 2);
+
+    //重置水果倒计时
+    resetWarningText_.setFont(font_);
+    resetWarningText_.setCharacterSize(24); // Set the character size for warning
+    resetWarningText_.setFillColor(sf::Color::Red);
+    resetWarningText_.setString("Fruits will reset in 5 seconds!");
+    sf::FloatRect warningBounds = resetWarningText_.getLocalBounds();
+    resetWarningText_.setOrigin(warningBounds.left + warningBounds.width / 2,
+                                warningBounds.top + warningBounds.height / 2);
+    resetWarningText_.setPosition(Game::Width / 2, Game::Height / 2 + 50);
 }
 
 //处理输入
@@ -54,6 +64,15 @@ void GameScreen::update(sf::Time delta)
 {
     // if (countCommonFruits()<COMMON_FRUITNUM)
     generateFruit();
+
+
+    // Check if it's time to reset fruits
+    if (fruitResetClock.getElapsedTime() >= fruitResetInterval) {
+        resetFruits();
+    }
+
+    // Show warning 5 seconds before reset
+
 
     // Update all fruits' state
     for (auto& fruit : fruit_) {
@@ -128,6 +147,10 @@ void GameScreen::render(sf::RenderWindow& window)
         fruit.render(window);
         renderBonusTimer(window, fruit);
     }
+
+    if (fruitResetClock.getElapsedTime() >= fruitResetInterval - warningInterval) {
+        window.draw(resetWarningText_);
+    }
 }
 void GameScreen::renderBonusTimer(sf::RenderWindow& window, const Fruit& fruit)
 {
@@ -153,58 +176,85 @@ void GameScreen::renderBonusTimer(sf::RenderWindow& window, const Fruit& fruit)
 
 void GameScreen::generateFruit()
 {
-	static std::mt19937 cd_make(std::random_device{}());
+    static std::mt19937 cd_make(std::random_device{}());
+    cd_make.seed(time(NULL));
 
-	cd_make.seed(time(NULL));
-	// int brown_record=0;
-	// int black_record=0;
     int commonFruitCount = countCommonFruits();
-    // std::cout<<"commonFruitCount1 = "<<commonFruitCount<<std::endl;
-	while(countCommonFruits()<COMMON_FRUITNUM){
-		
-		fruit_.push_back(Fruit(sf::Vector2f(xDistribution(cd_make), yDistribution(cd_make))));
-        // std::cout<<"commonFruitCount2 = "<<countCommonFruits()<<std::endl;
+    int blackbrown = 0;
+    // int brownCount = 0;
 
-		// for(auto record : fruit_){
-		// 	if(record.color()==sf::Color(128,64,0)){
-		// 		brown_record++;
-		// 	}
-		// 	if(record.color()==sf::Color::Black){
-		// 		black_record++;
-		// 	}
-		// }
-		// while(brown_record+black_record!=5){
-		// 	fruit_.push_back(Fruit(sf::Vector2f(xDistribution(cd_make), yDistribution(cd_make))));
-		// 	if (colorForm(cd_make))
-		// 	{
-		// 		fruit_[fruit_.size() - 1].setcolor(sf::Color(128, 64, 0));
-		// 		brown_record++;
-		// 	}
-		// 	else
-		// 	{
-		// 		fruit_[fruit_.size() - 1].setcolor(sf::Color::Black);
-		// 		black_record++;
-		// 	}
-		// }
-		// while(fruit_.size()<FRUITNUM){
-		// 	fruit_.push_back(Fruit(sf::Vector2f(xDistribution(cd_make), yDistribution(cd_make))));
-		// }
+    for (const auto& fruit : fruit_) {
+        if (fruit.getcolor() == sf::Color::Black) {
+            blackbrown++;
+        }
+        else if (fruit.getcolor() == sf::Color(139, 69, 19)) { // Brown color
+            blackbrown++;
+        }
+    }
 
-		while(snake_.getcurrenteaten() >= bonusFruitInterval_){
-            snake_.setcurrenteaten(0);
-            if(countBonusFruits() > 0) {
-                break;
-            }
-            else{
-                Fruit bonus = Fruit(sf::Vector2f(xDistribution(cd_make), yDistribution(cd_make)));
-                bonus.BonusFruit();
-                // bonus.makeBonus();
-                fruit_.push_back(bonus);
+    while (commonFruitCount < COMMON_FRUITNUM) {
+        Fruit newFruit(sf::Vector2f(xDistribution(cd_make), yDistribution(cd_make)));
+        // bool isSpecialColor = ((blackCount + brownCount) < (COMMON_FRUITNUM / 4)) && (blackCount + brownCount) >= (COMMON_FRUITNUM / 5);
+        bool isSpecialColor = (blackbrown) < (COMMON_FRUITNUM / 4);
+        
+        if (isSpecialColor) {
+            static sf::Color spacialColors[2] = { sf::Color::Black, sf::Color(139, 69, 19)};
+            static std::uniform_int_distribution<int> specialcolorDist(0, 1);
+            newFruit.setcolor(spacialColors[specialcolorDist(cd_make)]);
+            blackbrown++;
+        }
+        else {
+            // Set the color to one of the other three colors
+            static sf::Color otherColors[3] = { sf::Color::Red, sf::Color::Blue, sf::Color::Green };
+            static std::uniform_int_distribution<int> othercolorDist(0, 2);
+            newFruit.setcolor(otherColors[othercolorDist(cd_make)]);
+            // std::cout<<"color = " << othercolorDist(cd_make) <<std::endl;
+        }
 
-                flag++;
-            }
-		}
-	}
+        fruit_.push_back(newFruit);
+        commonFruitCount++;
+        std::cout<<"commonFruitCount = "<<commonFruitCount<<std::endl;
+    }
+
+    while (snake_.getcurrenteaten() >= bonusFruitInterval_) {
+        snake_.setcurrenteaten(0);
+        if (countBonusFruits() > 0) {
+            break;
+        }
+        else {
+            Fruit bonus = Fruit(sf::Vector2f(xDistribution(cd_make), yDistribution(cd_make)));
+            bonus.BonusFruit();
+            fruit_.push_back(bonus);
+        }
+    }
+}
+
+void GameScreen::resetFruits()
+{
+    fruit_.clear(); // Remove all existing fruits
+    static std::mt19937 cd_make(std::random_device{}());
+    // Generate new fruits
+    int blackbrown = 0;
+    for (int i = 0; i < COMMON_FRUITNUM; ++i) {
+        Fruit newFruit(sf::Vector2f(xDistribution(cd_make), yDistribution(cd_make)));
+        bool isSpecialColor = blackbrown < (COMMON_FRUITNUM / 4);
+
+        if (isSpecialColor) {
+            static sf::Color spacialColors[2] = { sf::Color::Black, sf::Color(139, 69, 19) };
+            static std::uniform_int_distribution<int> specialcolorDist(0, 1);
+            newFruit.setcolor(spacialColors[specialcolorDist(cd_make)]);
+            blackbrown++;
+        } else {
+            static sf::Color otherColors[3] = { sf::Color::Red, sf::Color::Blue, sf::Color::Green };
+            static std::uniform_int_distribution<int> othercolorDist(0, 2);
+            newFruit.setcolor(otherColors[othercolorDist(cd_make)]);
+        }
+
+        fruit_.push_back(newFruit);
+    }
+
+    // Reset the clock
+    fruitResetClock.restart();
 }
 
 int GameScreen::countCommonFruits() const

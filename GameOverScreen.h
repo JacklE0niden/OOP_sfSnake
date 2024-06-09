@@ -22,6 +22,7 @@ private:
 	sf::Text text_;
 
 	unsigned score_;
+	// Game& game_;
 };
 }
 

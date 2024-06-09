@@ -28,7 +28,7 @@ public:
 	int countBonusFruits() const;
 
 	//蛇节点移动
-	void generateSnake();
+	// void generateSnake();
 
 
 
@@ -45,6 +45,13 @@ private:
 	sf::Font font_;
 	sf::Text text_;
 
+	// New clock for resetting fruits
+    sf::Clock fruitResetClock; // New clock for resetting fruits
+    const sf::Time fruitResetInterval = sf::seconds(20); // Interval for resetting fruits
+	const sf::Time warningInterval = sf::seconds(5); // Time to show warning before reset
+	void resetFruits(); // New function to reset fruits
+	// 还有5秒就要重置水果
+	sf::Text resetWarningText_; // New text for reset warning
 
 	int flag{1};
 };

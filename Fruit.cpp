@@ -12,7 +12,7 @@ Fruit::Fruit(sf::Vector2f position)
 	bonusLifetimeFrames_(BonusLifetimeFrames) // 设置 BonusFruit 的生命周期为 10 秒
 {
     static std::mt19937 random(static_cast<unsigned>(time(NULL))); // 使用随机引擎
-    static std::uniform_int_distribution<int> color_choose(0, 5);
+    static std::uniform_int_distribution<int> color_choose(0, 4);
     int colorIndex = color_choose(random);
     color_ = fruit_color[colorIndex];
     shape_.setPosition(position);
@@ -65,6 +65,11 @@ void Fruit::update()
     if (isBonus_ && bonusLifetimeFrames_ > 0) {
         --bonusLifetimeFrames_; // 每帧减少生命周期
     }
+}
+
+void Fruit::setcolor(sf::Color colors){
+    color_ = colors;
+    shape_.setFillColor(color_);
 }
 
 bool Fruit::isExpired() const

@@ -9,6 +9,7 @@
 using namespace sfSnake;
 
 std::shared_ptr<Screen> Game::Screen = std::make_shared<MenuScreen>();
+sf::Time Game::TimePerFrame;
 
 Game::Game()
 : window_(sf::VideoMode(Game::Width, Game::Height), "sfSnake")
@@ -24,11 +25,11 @@ void Game::playmusic(){
 }
 
 void Game::setlowframe(){
-	TimePerFrame = sf::seconds(1.f / 5.f);
+	Game::TimePerFrame = sf::seconds(1.f / 5.f);
 }
 
 void Game::sethighframe(){
-	TimePerFrame = sf::seconds(1.f / 10.f);
+	Game::TimePerFrame = sf::seconds(1.f / 10.f);
 }
 
 const sf::Time Game::getTimePerFrame()

@@ -21,7 +21,10 @@ public:
     // 改变颜色
     void color_change() { shape_.setFillColor(color_); }
     // 设置颜色
-    void setcolor(sf::Color colors) { color_ = colors; }
+    void setcolor(sf::Color colors) ;
+
+    // 获取颜色
+    sf::Color getcolor() const { return color_; }
 
     // 是否为奖励的额外果实
     void BonusFruit();
@@ -43,7 +46,13 @@ private:
     // 半径
     float Radius;
     sf::Color color_;
-    sf::Color fruit_color[6] = {sf::Color::Red, sf::Color::Green, sf::Color::Blue, sf::Color(255, 0, 255), sf::Color(0, 255, 255), sf::Color(255, 255, 0)};
+    sf::Color fruit_color[5] = {
+        sf::Color::Black, 
+        sf::Color(139, 69, 19), // 棕色
+        sf::Color::Red, 
+        sf::Color::Blue, 
+        sf::Color::Green
+    };
     sf::Texture texture_;
     bool isBonus_;
 

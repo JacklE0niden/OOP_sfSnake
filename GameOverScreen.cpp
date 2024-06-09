@@ -30,7 +30,8 @@ void GameOverScreen::handleInput(sf::RenderWindow& window)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{	
-		std::cout << "GameScreen" << std::endl;
+		// std::cout << "GameScreen" << std::endl;
+		Game::sethighframe();
 		Game::Screen = std::make_shared<GameScreen>();
 	}
 		// Game::Screen = std::make_shared<GameScreen>();
@@ -45,5 +46,18 @@ void GameOverScreen::update(sf::Time delta)
 
 void GameOverScreen::render(sf::RenderWindow& window)
 {
-	window.draw(text_);
+    sf::Texture texture;
+    texture.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/apple.png");
+
+    sf::Sprite sprite(texture);
+
+    // 获取窗口大小
+    sf::Vector2u windowSize = window.getSize();
+
+    // 设置 sprite 的大小为窗口大小
+    sprite.setScale(static_cast<float>(windowSize.x) / texture.getSize().x,
+                    static_cast<float>(windowSize.y) / texture.getSize().y);
+
+    window.draw(sprite);
+    window.draw(text_);
 }

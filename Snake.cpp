@@ -134,21 +134,54 @@ void Snake::checkFruitCollisions(std::vector<Fruit>& fruits)
         {
             toRemove = it;
 
-            score_ += it->isBonus() ? 100 : 1;
+            sf::Color fruitColor = it->getcolor();
 
             if (it->isBonus())
             {
+                score_ += 100;
+                grow(1); // Bonus 水果增加1个单位长度
                 float remainingframe = it->getRemainingframe();
                 if (remainingframe < 0) remainingframe = 0; // Ensure positive time
                 int decrementRate = it->BonusLifetimeFrames - remainingframe;
                 float decrementScale = decrementRate / 1.5;
                 std::cout << "Remaining Time: " << remainingframe << " Decrement Rate: " << decrementRate << std::endl;
-                // std::cout << "Remaining Time: " << remainingTime << " Decrement Rate: " << decrementRate << std::endl;
                 score_ -= static_cast<int>(decrementScale);
             }
-            else{
+            else
+            {
+                if (fruitColor == sf::Color::Black)
+                {
+                    std::cout << "Eaten Black" << std::endl;
+                    score_ -= 3;
+                    // 不增加长度
+                }
+                else if (fruitColor == sf::Color(139, 69, 19)) // 棕色
+                {
+                    std::cout << "Eaten Brown" << std::endl;
+                    score_ += 1;
+                    // 不增加长度
+                }
+                else if (fruitColor == sf::Color::Red)
+                {
+                    std::cout << "Eaten Red" << std::endl;
+                    score_ -= 1;
+                    grow(3); // 减少1个单位长度
+                }
+                else if (fruitColor == sf::Color::Blue)
+                {
+                    std::cout << "Eaten Blue" << std::endl;
+                    score_ += 2;
+                    grow(2); // 增加2个单位长度
+                }
+                else if (fruitColor == sf::Color::Green)
+                {
+                    std::cout << "Eaten Green" << std::endl;
+                    score_ += 3;
+                    grow(1); // 增加1个单位长度
+                }
+
                 addcurrenteaten();
-                // std::cout<<"currenteaten = "<<currenteaten_<<std::endl;
+                // std::cout << "currenteaten = " << currenteaten_ << std::endl;
             }
         }
     }
@@ -156,33 +189,34 @@ void Snake::checkFruitCollisions(std::vector<Fruit>& fruits)
     if (toRemove != fruits.end())
     {
         pickupSound_.play();
-        grow();
         fruits.erase(toRemove);
     }
 }
-
 // 在移动方向的尾部添加一个节点
-void Snake::grow()
+void Snake::grow(int length)
 {
-	switch (direction_)
-	{
-	case Direction::Up:
-		nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x,
-			nodes_[nodes_.size() - 1].getPosition().y + SnakeNode::HEIGHT)));
-		break;
-	case Direction::Down:
-		nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x,
-			nodes_[nodes_.size() - 1].getPosition().y - SnakeNode::HEIGHT)));
-		break;
-	case Direction::Left:
-		nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x + SnakeNode::Width,
-			nodes_[nodes_.size() - 1].getPosition().y)));
-		break;
-	case Direction::Right:
-		nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x - SnakeNode::Width,
-			nodes_[nodes_.size() - 1].getPosition().y)));
-		break;
-	}
+    for (int i = 0; i < length; ++i)
+    {
+        switch (direction_)
+        {
+        case Direction::Up:
+            nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x,
+                nodes_[nodes_.size() - 1].getPosition().y + SnakeNode::HEIGHT)));
+            break;
+        case Direction::Down:
+            nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x,
+                nodes_[nodes_.size() - 1].getPosition().y - SnakeNode::HEIGHT)));
+            break;
+        case Direction::Left:
+            nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x + SnakeNode::Width,
+                nodes_[nodes_.size() - 1].getPosition().y)));
+            break;
+        case Direction::Right:
+            nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x - SnakeNode::Width,
+                nodes_[nodes_.size() - 1].getPosition().y)));
+            break;
+        }
+    }
 }
 
 unsigned Snake::getSize() const

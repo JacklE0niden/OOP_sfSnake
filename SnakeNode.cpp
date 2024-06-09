@@ -23,29 +23,29 @@ SnakeNode::SnakeNode(sf::Vector2f position)
 {
 	cir_shape_.setPosition(position_);
 	cir_shape_.setRadius(radius);
-	cir_shape_.setFillColor(fillcolor[colornum(random)]);
+	cir_shape_.setFillColor(sf::Color::Transparent); // Set to transparent
+	// cir_shape_.setFillColor(fillcolor[colornum(random)]);
     // cir_shape_.setOrigin(radius, radius); // 设置圆心为中心
 
-	//sf::Texture texture;
-    // if (!texture.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/snakenode.png")) {
-    //     std::cerr << "Failed to load texture" << std::endl;
-    // }
+	// sf::Texture texture;
+    if (!texture.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/snakenode.png")) {
+        std::cerr << "Failed to load texture" << std::endl;
+    }
 
 	rec_shape_.setPosition(sf::Vector2f(position.x+1.34,position.y+1.0*radius/2));
 	rec_shape_.setSize(sf::Vector2f(WIDTH,HEIGHT));
-    rec_shape_.setFillColor(sf::Color::Transparent); // Set to transparent
-    // rec_shape_.setOrigin(Width / 2, HEIGHT / 2);
-	// rec_shape_.setTexture(&texture,true);
+    // rec_shape_.setFillColor(sf::Color::Transparent); // Set to transparent
+    rec_shape_.setOrigin(Width / 2, HEIGHT / 2);
+	cir_shape_.setTexture(&texture,true);
 	//rec_shape_.setFillColor(fillcolor[colornum(random)]);
 }
 
-void SnakeNode::setPosition(sf::Vector2f position)
+void SnakeNode::setPosition(sf::Vector2f position)   
 {
-    position_ = position;
-    cir_shape_.setPosition(position_);
-    // 计算矩形位置：相对于圆心的偏移 + 蛇头位置
-    rec_shape_.setPosition(sf::Vector2f(position_.x + cos((angle_ + Pi / 2 - atan(radius * (1 - 0.866) / 5))) * 0.5176 * radius,
-                                        position_.y + sin((angle_ + Pi / 2 - atan(radius * (1 - 0.866) / 5))) * 0.5176 * radius));
+	position_ = position;
+	cir_shape_.setPosition(position_);
+	rec_shape_.setPosition(sf::Vector2f(position_.x+cos((angle_+Pi/2-atan(radius*(1-0.866)/5)))*0.5176*radius,
+	position_.y+sin((angle_+Pi/2-atan(radius*(1-0.866)/5)))*0.5176*radius));
 }
 
 // void SnakeNode::setPosition(float x, float y)
@@ -81,9 +81,9 @@ sf::Vector2f SnakeNode::getPosition() const
 
 void SnakeNode::render(sf::RenderWindow& window)
 {
-	// rec_shape_.setTexture(&texture,true);
-	// cir_shape_.setRotation(angle_);
-	// rec_shape_.setRotation(angle_);
+	rec_shape_.setTexture(&texture,true);
+	cir_shape_.setRotation(angle_/Pi*180);
+	rec_shape_.setRotation(angle_/Pi*180);
 	window.draw(cir_shape_);
 	window.draw(rec_shape_);
 } 
