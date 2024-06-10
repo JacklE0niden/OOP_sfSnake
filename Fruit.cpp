@@ -37,7 +37,7 @@ void Fruit::BonusFruit()
 {
     shape_.setFillColor(sf::Color::Red); // 将奖励水果设置为红色
     // 为奖励水果加载纹理
-    if (!texture_.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/apple.png")) {
+    if (!texture_.loadFromFile("../sfSnake/textures/apple.png")) {
         std::cerr << "Failed to load texture" << std::endl;
     }
     shape_.setTexture(&texture_,true);

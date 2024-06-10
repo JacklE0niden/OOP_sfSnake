@@ -18,11 +18,11 @@ Snake::Snake() : direction_(Direction::Up), hitSelf_(false), score_(0)  // 初�
 {
     initNodes();
 
-    pickupBuffer_.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/Sounds/pickup.wav");
+    pickupBuffer_.loadFromFile("../sfSnake/Sounds/pickup.wav");
     pickupSound_.setBuffer(pickupBuffer_);
     pickupSound_.setVolume(30);
 
-    dieBuffer_.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/Sounds/die.wav");
+    dieBuffer_.loadFromFile("../sfSnake/Sounds/die.wav");
     dieSound_.setBuffer(dieBuffer_);
     dieSound_.setVolume(50);
 }
@@ -31,7 +31,7 @@ Snake::Snake() : direction_(Direction::Up), hitSelf_(false), score_(0)  // 初�
 // TODO: 更改蛇头形状和蛇的形状，让蛇头变得更明显
 void Snake::initNodes()
 {
-    texture.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/snake_head.png");
+    texture.loadFromFile("../sfSnake/textures/snake_head.png");
 
     // 假设蛇头图片较大，需要根据图片尺寸进行调整
     sf::Vector2u textureSize = texture.getSize();

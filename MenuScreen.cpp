@@ -13,7 +13,7 @@ using namespace sfSnake;
 MenuScreen::MenuScreen()
 {
 	// font_.loadFromFile("Fonts/ARLRDBD.TTF");
-	font_.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/Fonts/ARLRDBD.TTF");
+	font_.loadFromFile("../sfSnake/Fonts/ARLRDBD.TTF");
 	text_.setFont(font_);
 	text_.setString(
 		"\n\n\n\n\n\n\n\n\nPress [SPACE] to play"
@@ -75,6 +75,11 @@ void MenuScreen::update(sf::Time delta)
 
 void MenuScreen::render(sf::RenderWindow& window)
 {
+	sf::Texture texture;
+	texture.loadFromFile("../sfSnake/textures/background3.png");
+	sf::Sprite sprite(texture);
+	sprite.setPosition(sf::Vector2f(0,0));
+	window.draw(sprite);
 	window.draw(text_);
 	window.draw(snakeText_);
 }

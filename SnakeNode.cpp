@@ -27,7 +27,7 @@ SnakeNode::SnakeNode(sf::Vector2f position)
     // cir_shape_.setOrigin(radius, radius); // 设置圆心为中心
 
 	// sf::Texture texture;
-    if (!texture.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/snakenode.png")) {
+    if (!texture.loadFromFile("../sfSnake/textures/snakenode.png")) {
         std::cerr << "Failed to load texture" << std::endl;
     }
 

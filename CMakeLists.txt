@@ -24,7 +24,7 @@ target_include_directories(sfSnake PRIVATE
 
 # 寻找 SFML 库
 set(SFML_DIR "C:/SFML-2.6.1/lib/cmake/SFML")
-find_package(SFML COMPONENTS graphics audio window system)
+find_package(SFML 2.6 COMPONENTS graphics audio window system)
 
 
 # 设置 SFML 相关的变量
@@ -39,6 +39,5 @@ include(InstallRequiredSystemLibraries)
 
 # 将 SFML 库链接到你的项目
 target_link_libraries(sfSnake PRIVATE sfml-graphics sfml-audio sfml-window sfml-system)
-
 # 将可执行文件复制到输出目录
 install(TARGETS sfSnake DESTINATION .)

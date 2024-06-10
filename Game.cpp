@@ -19,7 +19,7 @@ Game::Game()
 }
 
 void Game::playmusic(){
-    bgMusic_.openFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/Music/bg_music.wav");
+    bgMusic_.openFromFile("../sfSnake/Music/bg_music.wav");
 	bgMusic_.setLoop(true);
 	bgMusic_.play();
 }

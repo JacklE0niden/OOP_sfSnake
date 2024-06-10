@@ -19,19 +19,19 @@ static std::uniform_int_distribution<int> yDistribution(0, Game::Height - SnakeN
 static std::uniform_int_distribution<int> colorForm(0,1);
 
 std::string background_blank_choose[3]={
-	"C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background1.png",
-    "C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background2.png","C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background3.png"};
+	"../sfSnake/textures/background1.png",
+    "../sfSnake/textures/background2.png","../sfSnake/textures/background3.png"};
 
 std::string background_net_choose[3]={
-	"C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background_grid1.png",
-    "C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background_grid2.png","C:/Users/24398/Desktop/oop/大作业/sfSnake/textures/background_grid3.png"};
+	"../sfSnake/textures/background_grid1.png",
+    "../sfSnake/textures/background_grid2.png","../sfSnake/textures/background_grid3.png"};
 
 using namespace sfSnake;
 
 //创建蛇对象
 GameScreen::GameScreen() : snake_(), flag(1), score(0)
 {
-    font_.loadFromFile("C:/Users/24398/Desktop/oop/大作业/sfSnake/Fonts/ARLRDBD.TTF");
+    font_.loadFromFile("../sfSnake/Fonts/ARLRDBD.TTF");
     text_.setFont(font_);
     text_.setCharacterSize(16); // Set the character size
     text_.setFillColor(sf::Color(255, 165, 0));
@@ -231,23 +231,28 @@ void GameScreen::generateFruit()
 
 void GameScreen::resetFruits()
 {
-    fruit_.clear(); // Remove all existing fruits
+
+    fruit_.erase(std::remove_if(fruit_.begin(), fruit_.end(), [](const Fruit& fruit) {
+        return !fruit.isBonus(); 
+    }), fruit_.end());
+
     static std::mt19937 cd_make(std::random_device{}());
-    // Generate new fruits
     int blackbrown = 0;
+
+    // Generate new common fruits
     for (int i = 0; i < COMMON_FRUITNUM; ++i) {
         Fruit newFruit(sf::Vector2f(xDistribution(cd_make), yDistribution(cd_make)));
         bool isSpecialColor = blackbrown < (COMMON_FRUITNUM / 4);
 
         if (isSpecialColor) {
-            static sf::Color spacialColors[2] = { sf::Color::Black, sf::Color(139, 69, 19) };
-            static std::uniform_int_distribution<int> specialcolorDist(0, 1);
-            newFruit.setcolor(spacialColors[specialcolorDist(cd_make)]);
+            static sf::Color specialColors[2] = { sf::Color::Black, sf::Color(139, 69, 19) };
+            static std::uniform_int_distribution<int> specialColorDist(0, 1);
+            newFruit.setcolor(specialColors[specialColorDist(cd_make)]);
             blackbrown++;
         } else {
             static sf::Color otherColors[3] = { sf::Color::Red, sf::Color::Blue, sf::Color::Green };
-            static std::uniform_int_distribution<int> othercolorDist(0, 2);
-            newFruit.setcolor(otherColors[othercolorDist(cd_make)]);
+            static std::uniform_int_distribution<int> otherColorDist(0, 2);
+            newFruit.setcolor(otherColors[otherColorDist(cd_make)]);
         }
 
         fruit_.push_back(newFruit);
