@@ -1,8 +1,9 @@
 #include <SFML/Graphics.hpp>
 //#include"stopwatch.h"
 #include <memory>
-//#include<iostream>
+#include <iostream>
 #include "MenuScreen.h"
+
 #include "Game.h"
 #include "GameScreen.h"
 
@@ -24,12 +25,25 @@ void Game::playmusic(){
 	bgMusic_.play();
 }
 
-void Game::setlowframe(){
-	Game::TimePerFrame = sf::seconds(1.f / 5.f);
-}
-
-void Game::sethighframe(){
-	Game::TimePerFrame = sf::seconds(1.f / 10.f);
+void Game::setframe(Difficulty difficulty)
+{
+    switch (difficulty)
+    {
+    case Difficulty::Easy:
+        TimePerFrame = sf::seconds(1.f / 10.f);
+        break;
+    case Difficulty::Medium:
+        TimePerFrame = sf::seconds(1.f / 15.f);
+        break;
+    case Difficulty::Hard:
+        TimePerFrame = sf::seconds(1.f / 20.f);
+        break;
+    case Difficulty::Insane:
+        TimePerFrame = sf::seconds(1.f / 30.f);
+        break;
+    default:
+        break;
+    }
 }
 
 const sf::Time Game::getTimePerFrame()
@@ -62,21 +76,83 @@ void Game::render()
 	Game::Screen->render(window_);
 	window_.display();
 }
+// void Game::run()
+// {
+//     sf::Clock clock;
+    
+//     sf::Time timeSinceLastUpdate = sf::Time::Zero;
+//     sf::Time speedIncreaseInterval = sf::seconds(5.f);
+//     sf::Time timeSinceLastSpeedIncrease = sf::Time::Zero;
+//     std::cout << "Game::TimePerFrame: " << Game::TimePerFrame.asSeconds() << std::endl;
+    
+//     while (window_.isOpen())
+//     {
+//         sf::Time delta = clock.restart();
+//         timeSinceLastUpdate += delta;
+//         timeSinceLastSpeedIncrease += delta;
+        
+//         // 更新帧时间
+//         if (currentDifficulty_ != Difficulty::Easy)
+//         {
+//             switch (currentDifficulty_)
+//             {
+//             case Difficulty::Medium:
+//                 // std::cout<<"Medium"<<std::endl;
+//                 Game::TimePerFrame = sf::seconds(1.f / 15.f);
+//                 break;
+//             case Difficulty::Hard:
+//                 // std::cout<<"Hard"<<std::endl;
+//                 Game::TimePerFrame = sf::seconds(1.f / 20.f);
+//                 break;
+//             case Difficulty::Insane:
+//                 std::cout<<"Insane"<<std::endl;
+//                 Game::TimePerFrame = sf::seconds(1.f / 30.f);
+//                 break;
+//             default:
+//                 // std::cout<<"unknown"<<std::endl;
+//                 break;
+//             }
+//         }
+//         // else{
+//         //     std::cout<<"Easy"<<std::endl;
+//         // }
 
+//         // std::cout << "timeSinceLastUpdate: " << timeSinceLastUpdate.asSeconds() << std::endl;
+        
+//         while (timeSinceLastUpdate > Game::TimePerFrame)
+//         {
+//             timeSinceLastUpdate -= TimePerFrame;
+//             handleInput();
+//             update(TimePerFrame);
+//         }
+
+//         render();
+
+//         if (timeSinceLastSpeedIncrease > speedIncreaseInterval)
+//         {
+//             std::cout << "timeSinceLastSpeedIncrease: " << timeSinceLastSpeedIncrease.asSeconds() << std::endl;
+//             std::cout << "TimePerFrame: " << Game::TimePerFrame.asSeconds() << std::endl;
+//             timeSinceLastSpeedIncrease -= speedIncreaseInterval;
+//         }
+//     } 
+// }
 void Game::run()
 {
-	sf::Clock clock;
-	
+    sf::Clock clock;
+    
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
     sf::Time speedIncreaseInterval = sf::seconds(5.f);
     sf::Time timeSinceLastSpeedIncrease = sf::Time::Zero;
-
+    std::cout << "Game::TimePerFrame: " << Game::TimePerFrame.asSeconds() << std::endl;
+    
     while (window_.isOpen())
     {
         sf::Time delta = clock.restart();
         timeSinceLastUpdate += delta;
         timeSinceLastSpeedIncrease += delta;
-
+        
+        // std::cout << "timeSinceLastUpdate: " << timeSinceLastUpdate.asSeconds() << std::endl;
+        
         while (timeSinceLastUpdate > Game::TimePerFrame)
         {
             timeSinceLastUpdate -= TimePerFrame;
@@ -88,11 +164,35 @@ void Game::run()
 
         if (timeSinceLastSpeedIncrease > speedIncreaseInterval)
         {
-            timeSinceLastSpeedIncrease -= speedIncreaseInterval;
-            if (Game::TimePerFrame > sf::seconds(1.f / 30.f))
+            std::cout << "timeSinceLastSpeedIncrease: " << timeSinceLastSpeedIncrease.asSeconds() << std::endl;
+            std::cout << "TimePerFrame: " << Game::TimePerFrame.asSeconds() << std::endl;
+
+            // 检查当前难度并相应地调整帧时间
+            switch (currentDifficulty_)
             {
-                Game::TimePerFrame -= sf::seconds(0.01f);
+            case Difficulty::Medium:
+                if (Game::TimePerFrame > sf::seconds(1.f / 30.f))
+                {
+                    Game::TimePerFrame -= sf::seconds(0.01f);
+                }
+                break;
+            case Difficulty::Hard:
+                if (Game::TimePerFrame > sf::seconds(1.f / 35.f))
+                {
+                    Game::TimePerFrame -= sf::seconds(0.01f);
+                }
+                break;
+            case Difficulty::Insane:
+                if (Game::TimePerFrame > sf::seconds(1.f / 60.f))
+                {
+                    Game::TimePerFrame -= sf::seconds(0.01f);
+                }
+                break;
+            default:
+                break;
             }
+
+            timeSinceLastSpeedIncrease = sf::Time::Zero; // 重置时间
         }
-    }
+    } 
 }

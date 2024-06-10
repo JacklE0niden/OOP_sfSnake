@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "Game.h"
+#include "MenuScreen.h"
 #include "GameScreen.h"
 #include "GameOverScreen.h"
 
@@ -28,15 +29,14 @@ GameOverScreen::GameOverScreen(std::size_t score) : score_(score)
 
 void GameOverScreen::handleInput(sf::RenderWindow& window)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-	{	
-		// std::cout << "GameScreen" << std::endl;
-		Game::sethighframe();
-		Game::Screen = std::make_shared<GameScreen>();
-	}
-		// Game::Screen = std::make_shared<GameScreen>();
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-		window.close();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    {   
+        Game::Screen = std::make_shared<MenuScreen>();
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+    {
+        window.close();
+    }
 }
 
 void GameOverScreen::update(sf::Time delta)
