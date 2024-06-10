@@ -14,9 +14,12 @@ public:
 	void setPosition(sf::Vector2f position);
 	void setPosition(float x, float y);
 
+	// 设置节点的角度
+	void setAngle(float angle);
+
 	void move(float xOffset, float yOffset);
 
-	void render(sf::RenderWindow& window);
+	void render(sf::RenderWindow& window, bool isHead, bool isTail);
 
 	void update(sf::Time delta);
 
@@ -24,7 +27,7 @@ public:
 	sf::FloatRect getBounds() const;
 
 	static const float Width;
-	static const int HEIGHT = 10;
+	static const int Height = 10;
 	// float timeOffset_;
 
 private:
@@ -32,6 +35,7 @@ private:
 	sf::CircleShape cir_shape_;
 	// sf::RectangleShape shape_;
 	sf::Vector2f position_;
+	sf::ConvexShape tail_shape_; // Added for the tail
 	
 	// newly added
 	//为蛇节点着色、添加纹理和设置方向（角度）

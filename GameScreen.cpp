@@ -15,7 +15,7 @@ using namespace sfSnake;
 
 //随机数生成器
 static std::uniform_int_distribution<int> xDistribution(0, Game::Width - CIR_WIDTH);
-static std::uniform_int_distribution<int> yDistribution(0, Game::Height - SnakeNode ::HEIGHT);
+static std::uniform_int_distribution<int> yDistribution(0, Game::Height - SnakeNode ::Height);
 static std::uniform_int_distribution<int> colorForm(0,1);
 
 std::string background_blank_choose[3]={

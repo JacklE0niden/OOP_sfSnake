@@ -43,15 +43,15 @@ void Snake::initNodes()
 
     // 设置蛇头的位置
     head_.setPosition(sf::Vector2f(
-        Game::Width / 2 - (textureSize.x * scale) / 2,
-        Game::Height / 2 - (textureSize.y * scale) / 2));
+        Game::Width / 2 - SnakeNode::Width / 2 ,
+        Game::Height / 2 - SnakeNode::Height / 2));
 
     // 初始化蛇身节点
     for (int i = 1; i < Snake::InitialSize; ++i)
     {
         SnakeNode node(sf::Vector2f(
             Game::Width / 2 - SnakeNode::Width / 2,
-            Game::Height / 2 + (SnakeNode::HEIGHT * (i + 1)) - SnakeNode::HEIGHT / 2));
+            Game::Height / 2 + (SnakeNode::Height * (i + 1)) - SnakeNode::Height / 2));
         nodes_.push_back(node);
     }
 }
@@ -201,11 +201,11 @@ void Snake::grow(int length)
         {
         case Direction::Up:
             nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x,
-                nodes_[nodes_.size() - 1].getPosition().y + SnakeNode::HEIGHT)));
+                nodes_[nodes_.size() - 1].getPosition().y + SnakeNode::Height)));
             break;
         case Direction::Down:
             nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x,
-                nodes_[nodes_.size() - 1].getPosition().y - SnakeNode::HEIGHT)));
+                nodes_[nodes_.size() - 1].getPosition().y - SnakeNode::Height)));
             break;
         case Direction::Left:
             nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x + SnakeNode::Width,
@@ -301,10 +301,10 @@ void Snake::move()
 	switch (direction_)
 	{
 	case Direction::Up:
-		head_.move(0, -SnakeNode::HEIGHT);
+		head_.move(0, -SnakeNode::Height);
 		break;
 	case Direction::Down:
-		head_.move(0, SnakeNode::HEIGHT);
+		head_.move(0, SnakeNode::Height);
 		break;
 	case Direction::Left:
 		head_.move(-SnakeNode::Width, 0);
@@ -315,10 +315,22 @@ void Snake::move()
 	}
 }
 
-void Snake::render(sf::RenderWindow& window)
-{
-	// head_.setTexture(texture,true);
-	window.draw(head_);
-	for (auto node : nodes_)
-		node.render(window);
+void Snake::render(sf::RenderWindow& window) {
+    // 临时保存当前蛇头的位置
+    // sf::Vector2f originalHeadPosition = head_.getPosition();
+
+    // // 将蛇头的位置向左和向上各移动半个节点的宽度和高度
+    // head_.move(-SnakeNode::Width / 2, -SnakeNode::Height / 2);
+
+    // 绘制蛇头
+    window.draw(head_);
+
+    // 恢复蛇头的位置
+    // head_.setPosition(originalHeadPosition);
+
+    // 绘制蛇身节点
+    for (std::size_t i = 0; i < nodes_.size(); ++i) {
+        bool isTail = (i == nodes_.size() - 1);
+        nodes_[i].render(window, false, isTail);
+    }
 }
