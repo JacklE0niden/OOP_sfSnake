@@ -32,6 +32,7 @@ public:
 private:
 	sf::Font font_;
 	sf::Text text_;
+	sf::Music music_;//游戏结束时的背景音乐
 
 	int score_;
 	// Game& game_;

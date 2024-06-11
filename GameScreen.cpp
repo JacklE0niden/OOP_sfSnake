@@ -56,6 +56,13 @@ GameScreen::GameScreen() : snake_(), flag(1), score(0)
     resetWarningText_.setOrigin(warningBounds.left + warningBounds.width / 2,
                                 warningBounds.top + warningBounds.height / 2);
     resetWarningText_.setPosition(Game::Width / 2, Game::Height / 2 + 50);
+    // 加载并播放背景音乐
+    if (!music_.openFromFile("../sfSnake/Music/bg_music.wav")) {
+        std::cerr << "Failed to load background music" << std::endl;
+    } else {
+        music_.setLoop(true);
+        music_.play();
+    }
 }
 
 //处理输入
@@ -159,26 +166,7 @@ void GameScreen::render(sf::RenderWindow& window)
         window.draw(resetWarningText_);
     }
 }
-// void GameScreen::renderBonusTimer(sf::RenderWindow& window, const Fruit& fruit)
-// {
-//     if (fruit.isBonus()) {
-//         // 计算 BonusFruit 剩余时间的比例
-//         float remainingframe = fruit.getRemainingframe();
-//         // std::cout<<"remainingframe = "<<remainingframe<<std::endl;
-//         float progress = remainingframe / fruit.BonusLifetimeFrames;
 
-//         // 计算进度条的宽度
-//         float progressBarWidth = Game::Width * progress;
-
-//         // 创建和设置进度条
-//         sf::RectangleShape progressBar(sf::Vector2f(progressBarWidth, 10));
-//         progressBar.setFillColor(sf::Color::Red);
-//         progressBar.setPosition(0, Game::Height - 10);
-
-//         // 绘制进度条
-//         window.draw(progressBar);
-//     }
-// }
 
 void GameScreen::renderBonusTimer(sf::RenderWindow& window, const Fruit& fruit)
 {
@@ -191,9 +179,9 @@ void GameScreen::renderBonusTimer(sf::RenderWindow& window, const Fruit& fruit)
         float progressBarWidth = Game::Width * progress;
 
         // 创建和设置进度条
-        sf::RectangleShape progressBar(sf::Vector2f(progressBarWidth, 10));
+        sf::RectangleShape progressBar(sf::Vector2f(progressBarWidth, 5));
         progressBar.setFillColor(sf::Color::Red);
-        progressBar.setPosition(0, Game::Height);  // 设置进度条的位置在窗口底部
+        progressBar.setPosition(0, Game::Height-5);  // 设置进度条的位置在窗口底部之外
 
         // 绘制进度条
         window.draw(progressBar);
@@ -315,17 +303,17 @@ int GameScreen::countBonusFruits() const
 
 void GameScreen::updateScore()
 {
-    // score = snake_.getScore();
-    // // std::cout << "Updating score: " << score << std::endl;
+    score = snake_.getScore();
+    // std::cout << "Updating score: " << score << std::endl;
 
-    // std::string scoreString = "Score: " + std::to_string(score);
-    // // std::cout<<"scoreString = "<<scoreString<<std::endl;
-    // // text_.setString(scoreString);
-    // // std::cout << "Score string set: " << text_.getString().toAnsiString() << std::endl;
+    std::string scoreString = "Score: " + std::to_string(score);
+    // std::cout<<"scoreString = "<<scoreString<<std::endl;
+    text_.setString(scoreString);
+    // std::cout << "Score string set: " << text_.getString().toAnsiString() << std::endl;
 
-    // // Update text position if necessary
-    // sf::FloatRect textBounds = text_.getLocalBounds();
-    // text_.setOrigin(textBounds.left + textBounds.width / 2,
-    //                 textBounds.top + textBounds.height / 2);
+    // Update text position if necessary
+    sf::FloatRect textBounds = text_.getLocalBounds();
+    text_.setOrigin(textBounds.left + textBounds.width / 2,
+                    textBounds.top + textBounds.height / 2);
     // std::cout << "Text position updated" << std::endl;
 }

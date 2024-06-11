@@ -50,6 +50,7 @@ private:
 	int score{0};
 	sf::Font font_;
 	sf::Text text_;
+	sf::Music music_;
 
 	// New clock for resetting fruits
     sf::Clock fruitResetClock; // New clock for resetting fruits

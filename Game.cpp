@@ -8,12 +8,11 @@
 #include "GameScreen.h"
 
 using namespace sfSnake;
-#define ExtraHeight 10
 std::shared_ptr<Screen> Game::Screen = std::make_shared<MenuScreen>();
 sf::Time Game::TimePerFrame;
 
 Game::Game()
-: window_(sf::VideoMode(Game::Width, Game::Height + ExtraHeight), "sfSnake")
+: window_(sf::VideoMode(Game::Width, Game::Height), "sfSnake")
 {
 	isRunning = true;
 	TimePerFrame = sf::seconds(1.f / 10.f);
@@ -83,7 +82,7 @@ void Game::run()
     sf::Clock clock;
     
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
-    sf::Time speedIncreaseInterval = sf::seconds(5.f);
+    sf::Time speedIncreaseInterval = sf::seconds(2.f);
     sf::Time timeSinceLastSpeedIncrease = sf::Time::Zero;
     std::cout << "Game::TimePerFrame: " << Game::TimePerFrame.asSeconds() << std::endl;
     
@@ -128,7 +127,7 @@ void Game::run()
                 }
                 break;
             case Difficulty::Insane:
-                if (Game::TimePerFrame > sf::seconds(1.f / 60.f))
+                if (Game::TimePerFrame > sf::seconds(1.f / 45.f)) // 设置最快速度
                 {
                     Game::TimePerFrame -= sf::seconds(0.01f);
                 }

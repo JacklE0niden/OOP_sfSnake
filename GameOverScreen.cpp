@@ -26,6 +26,14 @@ GameOverScreen::GameOverScreen(int score)
 	text_.setOrigin(textBounds.left + textBounds.width / 2,
 		textBounds.top + textBounds.height / 2);
 	text_.setPosition(Game::Width / 2, Game::Height / 2);
+        
+    // 加载并播放背景音乐
+    if (!music_.openFromFile("../sfSnake/Music/split.wav")) {
+        std::cerr << "Failed to load background music" << std::endl;
+    } else {
+        music_.setLoop(true);
+        music_.play();
+    }
 }
 
 void GameOverScreen::handleInput(sf::RenderWindow& window)
