@@ -25,6 +25,10 @@ public:
 
     // 获取当前游戏难度
     Difficulty getDifficulty() const { return currentDifficulty_; }
+	~MenuScreen()
+	{
+		std::cout << "MenuScreen destroyed" << std::endl;
+	}
 
 private:
 	sf::Font font_;

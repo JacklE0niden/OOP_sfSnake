@@ -8,6 +8,7 @@
 #include <memory>
 #include "GameSettings.h"
 #include "Screen.h"
+#include <iostream>
 
 namespace sfSnake
 {
@@ -36,11 +37,29 @@ public:
 
 	static std::shared_ptr<Screen> Screen;
 
+	void setGameOver()
+	{
+		isRunning = false;
+	}
+	void setGameStart()
+	{
+		isRunning = true;
+	}
+	bool getGameStatus()
+	{
+		return isRunning;
+	}
+	~Game()
+	{
+		std::cout << "Game destroyed" << std::endl;
+	}
+
 private:
 	sf::RenderWindow window_;
 	sf::Music bgMusic_;
 	//float framerate;
 	Difficulty currentDifficulty_;
+	bool isRunning;
 	
 };
 }

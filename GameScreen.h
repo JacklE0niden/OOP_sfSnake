@@ -7,14 +7,15 @@
 #include "Screen.h"
 #include "Snake.h"
 #include "Fruit.h"
+#include "Game.h"
 
 namespace sfSnake
 {
 class GameScreen : public Screen
 {
 public:
+	// GameScreen(Game& game);
 	GameScreen();
-
 	void handleInput(sf::RenderWindow& window) override;
 	void update(sf::Time delta) override;
 	void render(sf::RenderWindow& window) override;
@@ -26,6 +27,11 @@ public:
 
 	int countCommonFruits() const;
 	int countBonusFruits() const;
+
+	~GameScreen()
+	{
+		std::cout << "GameScreen destroyed" << std::endl;
+	}
 
 	//蛇节点移动
 	// void generateSnake();
@@ -54,6 +60,7 @@ private:
 	sf::Text resetWarningText_; // New text for reset warning
 
 	int flag{1};
+	// Game& game_;
 };
 }
 

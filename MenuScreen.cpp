@@ -34,25 +34,18 @@ MenuScreen::MenuScreen() : currentDifficulty_(Difficulty::Easy)
     snakeText_.setPosition(Game::Width / 2, Game::Height / 4);
 }
 
-// 处理菜单状态下的玩家相应
-// void MenuScreen::handleInput(sf::RenderWindow& window)
-// {
-// 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-// 		Game::Screen = std::make_shared<GameScreen>();
-// 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-// 		window.close();
-// }
-
 void MenuScreen::handleInput(sf::RenderWindow &window)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
+        Game game;
 		Game::Screen = std::make_shared<GameScreen>();
 		window.close();
-		Game game;
+		
 		game.setframe(currentDifficulty_);
 		game.setDifficulty(currentDifficulty_);
 		game.run();
+
 	}
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         window.close();
@@ -62,15 +55,15 @@ void MenuScreen::handleInput(sf::RenderWindow &window)
         {
             case Difficulty::Hard:
                 setDifficulty(Difficulty::Medium);
-                std::cout << "Current difficulty: Medium" << std::endl;
+                // std::cout << "Current difficulty: Medium" << std::endl;
                 break;
             case Difficulty::Medium:
                 setDifficulty(Difficulty::Easy);
-                std::cout << "Current difficulty: Easy" << std::endl;
+                // std::cout << "Current difficulty: Easy" << std::endl;
                 break;
             case Difficulty::Insane: 
                 setDifficulty(Difficulty::Hard);
-                std::cout << "Current difficulty: Hard" << std::endl;
+                // std::cout << "Current difficulty: Hard" << std::endl;
                 break;       
 			case Difficulty::Easy:
                 break;
@@ -82,15 +75,15 @@ void MenuScreen::handleInput(sf::RenderWindow &window)
         {
             case Difficulty::Easy:
                 setDifficulty(Difficulty::Medium);
-                std::cout << "Current difficulty: Medium" << std::endl;
+                // std::cout << "Current difficulty: Medium" << std::endl;
                 break;
             case Difficulty::Medium:
                 setDifficulty(Difficulty::Hard);
-                std::cout << "Current difficulty: Hard" << std::endl;
+                // std::cout << "Current difficulty: Hard" << std::endl;
                 break;
             case Difficulty::Hard:
               	setDifficulty(Difficulty::Insane);
-                std::cout << "Current difficulty: Insane" << std::endl;
+                // std::cout << "Current difficulty: Insane" << std::endl;
                 break;
             case Difficulty::Insane: // 如果当前是 Hard 或 Insane，按 RSHIFT 仍然设置为 Hard
                 // 不执行任何操作，难度已经是最高的了

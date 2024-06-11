@@ -5,6 +5,7 @@
 // #include <SFML/include/SFML/Graphics.hpp>
 // #include <SFML/include/SFML/Audio.hpp>
 #include "Screen.h"
+#include "Game.h"
 #include "GameSettings.h"
 
 namespace sfSnake
@@ -12,8 +13,8 @@ namespace sfSnake
 class GameOverScreen : public Screen
 {
 public:
-	GameOverScreen(std::size_t score);
-
+	// GameOverScreen(int score, Game& game);
+	GameOverScreen(int score);
 	void handleInput(sf::RenderWindow& window) override;
 	void update(sf::Time delta) override;
 	void render(sf::RenderWindow& window) override;
@@ -24,11 +25,15 @@ public:
     //获取当前游戏难度
     Difficulty getDifficulty() const { return currentDifficulty_; }
 
+	~GameOverScreen(){
+		std::cout << "GameOverScreen destroyed" << std::endl;
+	}
+
 private:
 	sf::Font font_;
 	sf::Text text_;
 
-	unsigned score_;
+	int score_;
 	// Game& game_;
 	Difficulty currentDifficulty_;
 };

@@ -29,10 +29,16 @@ std::string background_net_choose[3]={
 using namespace sfSnake;
 
 //创建蛇对象
+// GameScreen::GameScreen(Game& game) : snake_(), flag(1), score(0), game_(game)
 GameScreen::GameScreen() : snake_(), flag(1), score(0)
 {
-    font_.loadFromFile("../sfSnake/Fonts/ARLRDBD.TTF");
+    if (!font_.loadFromFile("../sfSnake/Fonts/ARLRDBD.TTF"))
+    {
+        std::cerr << "Failed to load font" << std::endl;
+        // return -1;
+    }
     text_.setFont(font_);
+    text_.setString("Score: 0");
     text_.setCharacterSize(16); // Set the character size
     text_.setFillColor(sf::Color(255, 165, 0));
     updateScore(); // Ensure the score text is set initially
@@ -91,6 +97,7 @@ void GameScreen::update(sf::Time delta)
     if (snake_.hitSelf()) {
         flag = 1;
 		printf("GAME OVER!");
+        std::cout<<"score = "<<snake_.getScore()<<std::endl;
         Game::Screen = std::make_shared<GameOverScreen>(snake_.getScore());
     }
 
@@ -152,12 +159,32 @@ void GameScreen::render(sf::RenderWindow& window)
         window.draw(resetWarningText_);
     }
 }
+// void GameScreen::renderBonusTimer(sf::RenderWindow& window, const Fruit& fruit)
+// {
+//     if (fruit.isBonus()) {
+//         // 计算 BonusFruit 剩余时间的比例
+//         float remainingframe = fruit.getRemainingframe();
+//         // std::cout<<"remainingframe = "<<remainingframe<<std::endl;
+//         float progress = remainingframe / fruit.BonusLifetimeFrames;
+
+//         // 计算进度条的宽度
+//         float progressBarWidth = Game::Width * progress;
+
+//         // 创建和设置进度条
+//         sf::RectangleShape progressBar(sf::Vector2f(progressBarWidth, 10));
+//         progressBar.setFillColor(sf::Color::Red);
+//         progressBar.setPosition(0, Game::Height - 10);
+
+//         // 绘制进度条
+//         window.draw(progressBar);
+//     }
+// }
+
 void GameScreen::renderBonusTimer(sf::RenderWindow& window, const Fruit& fruit)
 {
     if (fruit.isBonus()) {
         // 计算 BonusFruit 剩余时间的比例
         float remainingframe = fruit.getRemainingframe();
-        // std::cout<<"remainingframe = "<<remainingframe<<std::endl;
         float progress = remainingframe / fruit.BonusLifetimeFrames;
 
         // 计算进度条的宽度
@@ -166,12 +193,14 @@ void GameScreen::renderBonusTimer(sf::RenderWindow& window, const Fruit& fruit)
         // 创建和设置进度条
         sf::RectangleShape progressBar(sf::Vector2f(progressBarWidth, 10));
         progressBar.setFillColor(sf::Color::Red);
-        progressBar.setPosition(0, Game::Height - 10);
+        progressBar.setPosition(0, Game::Height);  // 设置进度条的位置在窗口底部
 
         // 绘制进度条
         window.draw(progressBar);
     }
 }
+
+
 //生成水果
 
 void GameScreen::generateFruit()
@@ -213,7 +242,7 @@ void GameScreen::generateFruit()
 
         fruit_.push_back(newFruit);
         commonFruitCount++;
-        std::cout<<"commonFruitCount = "<<commonFruitCount<<std::endl;
+        // std::cout<<"commonFruitCount = "<<commonFruitCount<<std::endl;
     }
 
     while (snake_.getcurrenteaten() >= bonusFruitInterval_) {
@@ -286,10 +315,17 @@ int GameScreen::countBonusFruits() const
 
 void GameScreen::updateScore()
 {
-    score = snake_.getScore();
-    text_.setString("Score: " + std::to_string(score));
-    // Update text position if necessary
-    sf::FloatRect textBounds = text_.getLocalBounds();
-    text_.setOrigin(textBounds.left + textBounds.width / 2,
-                    textBounds.top + textBounds.height / 2);
+    // score = snake_.getScore();
+    // // std::cout << "Updating score: " << score << std::endl;
+
+    // std::string scoreString = "Score: " + std::to_string(score);
+    // // std::cout<<"scoreString = "<<scoreString<<std::endl;
+    // // text_.setString(scoreString);
+    // // std::cout << "Score string set: " << text_.getString().toAnsiString() << std::endl;
+
+    // // Update text position if necessary
+    // sf::FloatRect textBounds = text_.getLocalBounds();
+    // text_.setOrigin(textBounds.left + textBounds.width / 2,
+    //                 textBounds.top + textBounds.height / 2);
+    // std::cout << "Text position updated" << std::endl;
 }

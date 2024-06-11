@@ -35,7 +35,7 @@ public:
 	bool hitSelf() const;
 
 	unsigned getSize() const;
-	unsigned getScore() const;
+	int getScore() const;
 
     void setcurrenteaten(int currenteaten){currenteaten_ = currenteaten;}
     void addcurrenteaten(){currenteaten_++;} // 新增加分数的函数

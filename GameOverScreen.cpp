@@ -11,7 +11,8 @@
 
 using namespace sfSnake;
 
-GameOverScreen::GameOverScreen(std::size_t score) : score_(score)
+GameOverScreen::GameOverScreen(int score)
+    : score_(score)
 {
 	// font_.loadFromFile("Fonts/ARLRDBD.TTF");
 	font_.loadFromFile("../sfSnake/Fonts/ARLRDBD.TTF");
@@ -31,7 +32,10 @@ void GameOverScreen::handleInput(sf::RenderWindow& window)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {   
-        Game::Screen = std::make_shared<MenuScreen>();
+		Game::Screen = std::make_shared<MenuScreen>();
+		window.close();
+		Game game;
+		game.run();
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
     {

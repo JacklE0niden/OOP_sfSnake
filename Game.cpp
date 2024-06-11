@@ -8,14 +8,14 @@
 #include "GameScreen.h"
 
 using namespace sfSnake;
-
+#define ExtraHeight 10
 std::shared_ptr<Screen> Game::Screen = std::make_shared<MenuScreen>();
 sf::Time Game::TimePerFrame;
 
 Game::Game()
-: window_(sf::VideoMode(Game::Width, Game::Height), "sfSnake")
+: window_(sf::VideoMode(Game::Width, Game::Height + ExtraHeight), "sfSnake")
 {
-	
+	isRunning = true;
 	TimePerFrame = sf::seconds(1.f / 10.f);
 }
 
@@ -138,6 +138,7 @@ void Game::render()
 // }
 void Game::run()
 {
+    // Game::Screen = std::make_shared<GameScreen>(*this);
     sf::Clock clock;
     
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
@@ -145,8 +146,15 @@ void Game::run()
     sf::Time timeSinceLastSpeedIncrease = sf::Time::Zero;
     std::cout << "Game::TimePerFrame: " << Game::TimePerFrame.asSeconds() << std::endl;
     
+    // bool isRunning = true; // 添加一个标志来控制游戏循环
+
     while (window_.isOpen())
     {
+        // if(!isRunning)
+        // {
+        //     Game::Screen = std::make_shared<GameScreen>(0, *this);
+        //     isRunning = true;
+        // }
         sf::Time delta = clock.restart();
         timeSinceLastUpdate += delta;
         timeSinceLastSpeedIncrease += delta;

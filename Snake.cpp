@@ -144,38 +144,38 @@ void Snake::checkFruitCollisions(std::vector<Fruit>& fruits)
                 if (remainingframe < 0) remainingframe = 0; // Ensure positive time
                 int decrementRate = it->BonusLifetimeFrames - remainingframe;
                 float decrementScale = decrementRate / 1.5;
-                std::cout << "Remaining Time: " << remainingframe << " Decrement Rate: " << decrementRate << std::endl;
+                // std::cout << "Remaining Time: " << remainingframe << " Decrement Rate: " << decrementRate << std::endl;
                 score_ -= static_cast<int>(decrementScale);
             }
             else
             {
                 if (fruitColor == sf::Color::Black)
                 {
-                    std::cout << "Eaten Black" << std::endl;
+                    // std::cout << "Eaten Black" << std::endl;
                     score_ -= 3;
                     // 不增加长度
                 }
                 else if (fruitColor == sf::Color(139, 69, 19)) // 棕色
                 {
-                    std::cout << "Eaten Brown" << std::endl;
+                    // std::cout << "Eaten Brown" << std::endl;
                     score_ += 1;
                     // 不增加长度
                 }
                 else if (fruitColor == sf::Color::Red)
                 {
-                    std::cout << "Eaten Red" << std::endl;
+                    // std::cout << "Eaten Red" << std::endl;
                     score_ -= 1;
                     grow(3); // 减少1个单位长度
                 }
                 else if (fruitColor == sf::Color::Blue)
                 {
-                    std::cout << "Eaten Blue" << std::endl;
+                    // std::cout << "Eaten Blue" << std::endl;
                     score_ += 2;
                     grow(2); // 增加2个单位长度
                 }
                 else if (fruitColor == sf::Color::Green)
                 {
-                    std::cout << "Eaten Green" << std::endl;
+                    // std::cout << "Eaten Green" << std::endl;
                     score_ += 3;
                     grow(1); // 增加1个单位长度
                 }
@@ -229,7 +229,7 @@ bool Snake::hitSelf() const
 	return hitSelf_;
 }
 
-unsigned Snake::getScore() const
+int Snake::getScore() const
 {
 	return score_;
 }
