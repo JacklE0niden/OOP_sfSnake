@@ -1,6 +1,7 @@
 #ifndef SNAKE_NODE_H
 #define SNAKE_NODE_H
 
+#include <iostream>
 #include <SFML/Graphics.hpp>
 // #include <SFML/include/SFML/Graphics.hpp>
 // #include <SFML/include/SFML/Audio.hpp>
@@ -28,6 +29,9 @@ public:
 
 	static const float Width;
 	static const int Height = 10;
+	// ~SnakeNode(){
+	// 	std::cout<<"SnakeNode destroyed"<<std::endl;
+	// }
 	// float timeOffset_;
 
 private:

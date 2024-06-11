@@ -84,7 +84,7 @@ void Game::run()
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
     sf::Time speedIncreaseInterval = sf::seconds(2.f);
     sf::Time timeSinceLastSpeedIncrease = sf::Time::Zero;
-    std::cout << "Game::TimePerFrame: " << Game::TimePerFrame.asSeconds() << std::endl;
+    // std::cout << "Game::TimePerFrame: " << Game::TimePerFrame.asSeconds() << std::endl;
     
     // bool isRunning = true; // 添加一个标志来控制游戏循环
 
@@ -108,8 +108,8 @@ void Game::run()
 
         if (timeSinceLastSpeedIncrease > speedIncreaseInterval)
         {
-            std::cout << "timeSinceLastSpeedIncrease: " << timeSinceLastSpeedIncrease.asSeconds() << std::endl;
-            std::cout << "TimePerFrame: " << Game::TimePerFrame.asSeconds() << std::endl;
+            // std::cout << "timeSinceLastSpeedIncrease: " << timeSinceLastSpeedIncrease.asSeconds() << std::endl;
+            // std::cout << "TimePerFrame: " << Game::TimePerFrame.asSeconds() << std::endl;
 
             // 检查当前难度并相应地调整帧时间
             switch (currentDifficulty_)
@@ -117,19 +117,19 @@ void Game::run()
             case Difficulty::Medium:
                 if (Game::TimePerFrame > sf::seconds(1.f / 30.f))
                 {
-                    Game::TimePerFrame -= sf::seconds(0.01f);
+                    Game::TimePerFrame -= sf::seconds(0.002f);
                 }
                 break;
             case Difficulty::Hard:
                 if (Game::TimePerFrame > sf::seconds(1.f / 35.f))
                 {
-                    Game::TimePerFrame -= sf::seconds(0.01f);
+                    Game::TimePerFrame -= sf::seconds(0.002f);
                 }
                 break;
             case Difficulty::Insane:
                 if (Game::TimePerFrame > sf::seconds(1.f / 45.f)) // 设置最快速度
                 {
-                    Game::TimePerFrame -= sf::seconds(0.01f);
+                    Game::TimePerFrame -= sf::seconds(0.002f);
                 }
                 break;
             default:

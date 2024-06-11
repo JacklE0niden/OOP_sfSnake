@@ -9,7 +9,7 @@ using namespace sfSnake;
 
 Fruit::Fruit(sf::Vector2f position)
     : isBonus_(false),  // 初始化是否为奖励水果
-	bonusLifetimeFrames_(BonusLifetimeFrames) // 设置 BonusFruit 的生命周期为 10 秒
+	bonusLifetimeFrames_(BonusLifetimeFrames) // 设置 BonusFruit 的生命周期
 {
     static std::mt19937 random(static_cast<unsigned>(time(NULL))); // 使用随机引擎
     static std::uniform_int_distribution<int> color_choose(0, 4);
