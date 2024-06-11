@@ -45,7 +45,7 @@ void Fruit::BonusFruit()
     shape_.setRadius(Fruit::Radius);
     isBonus_ = true; // 设置为奖励水果
     bonusLifetimeFrames_ = BonusLifetimeFrames;
-    bonusClock_.restart(); // Ensure clock is reset when becoming bonus
+    bonusClock_.restart(); 
 }
 
 bool Fruit::operator==(const Fruit& other)
@@ -84,8 +84,6 @@ bool Fruit::isExpired() const
 int Fruit::getRemainingframe() const
 {
     if (isBonus_) {
-        // 获取 TimePerFrame 的值
-        // sf::Time timePerFrame = Game::getTimePerFrame();
         // 将剩余的帧数转换为秒数
         return static_cast<int>(bonusLifetimeFrames_);
     }

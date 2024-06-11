@@ -76,66 +76,7 @@ void Game::render()
 	Game::Screen->render(window_);
 	window_.display();
 }
-// void Game::run()
-// {
-//     sf::Clock clock;
-    
-//     sf::Time timeSinceLastUpdate = sf::Time::Zero;
-//     sf::Time speedIncreaseInterval = sf::seconds(5.f);
-//     sf::Time timeSinceLastSpeedIncrease = sf::Time::Zero;
-//     std::cout << "Game::TimePerFrame: " << Game::TimePerFrame.asSeconds() << std::endl;
-    
-//     while (window_.isOpen())
-//     {
-//         sf::Time delta = clock.restart();
-//         timeSinceLastUpdate += delta;
-//         timeSinceLastSpeedIncrease += delta;
-        
-//         // 更新帧时间
-//         if (currentDifficulty_ != Difficulty::Easy)
-//         {
-//             switch (currentDifficulty_)
-//             {
-//             case Difficulty::Medium:
-//                 // std::cout<<"Medium"<<std::endl;
-//                 Game::TimePerFrame = sf::seconds(1.f / 15.f);
-//                 break;
-//             case Difficulty::Hard:
-//                 // std::cout<<"Hard"<<std::endl;
-//                 Game::TimePerFrame = sf::seconds(1.f / 20.f);
-//                 break;
-//             case Difficulty::Insane:
-//                 std::cout<<"Insane"<<std::endl;
-//                 Game::TimePerFrame = sf::seconds(1.f / 30.f);
-//                 break;
-//             default:
-//                 // std::cout<<"unknown"<<std::endl;
-//                 break;
-//             }
-//         }
-//         // else{
-//         //     std::cout<<"Easy"<<std::endl;
-//         // }
 
-//         // std::cout << "timeSinceLastUpdate: " << timeSinceLastUpdate.asSeconds() << std::endl;
-        
-//         while (timeSinceLastUpdate > Game::TimePerFrame)
-//         {
-//             timeSinceLastUpdate -= TimePerFrame;
-//             handleInput();
-//             update(TimePerFrame);
-//         }
-
-//         render();
-
-//         if (timeSinceLastSpeedIncrease > speedIncreaseInterval)
-//         {
-//             std::cout << "timeSinceLastSpeedIncrease: " << timeSinceLastSpeedIncrease.asSeconds() << std::endl;
-//             std::cout << "TimePerFrame: " << Game::TimePerFrame.asSeconds() << std::endl;
-//             timeSinceLastSpeedIncrease -= speedIncreaseInterval;
-//         }
-//     } 
-// }
 void Game::run()
 {
     // Game::Screen = std::make_shared<GameScreen>(*this);
@@ -150,11 +91,7 @@ void Game::run()
 
     while (window_.isOpen())
     {
-        // if(!isRunning)
-        // {
-        //     Game::Screen = std::make_shared<GameScreen>(0, *this);
-        //     isRunning = true;
-        // }
+
         sf::Time delta = clock.restart();
         timeSinceLastUpdate += delta;
         timeSinceLastSpeedIncrease += delta;

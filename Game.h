@@ -22,8 +22,8 @@ public:
 	void handleInput();
 	void update(sf::Time delta);
 	void render();
-	// static void setlowframe();
-	// static void sethighframe();
+
+	// 根据难度设置帧率
 	static void setframe(Difficulty difficulty);
 	static sf::Time TimePerFrame;
 

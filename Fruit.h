@@ -60,9 +60,6 @@ private:
     // 只要保留一个
     int bonusLifetimeFrames_;
     
-
-    //让fruit知道一个游戏对象
-    // Game& game_;
 };
 }
 
