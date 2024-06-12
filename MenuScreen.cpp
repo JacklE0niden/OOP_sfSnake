@@ -93,7 +93,7 @@ void MenuScreen::handleInput(sf::RenderWindow &window)
 }
 
 
-// 更新菜单界面的状态，例如标题的动画效果
+// 更新菜单界面的状态，例如标题的动画效果，文字的旋转
 void MenuScreen::update(sf::Time delta)
 {
 	static bool movingLeft = false;
