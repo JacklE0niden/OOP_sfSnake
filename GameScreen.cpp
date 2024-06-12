@@ -100,6 +100,7 @@ void GameScreen::update(sf::Time delta)
     fruit_.erase(std::remove_if(fruit_.begin(), fruit_.end(),
                                 [](const Fruit& fruit) { return fruit.isExpired(); }),
                  fruit_.end());
+    updateScore();
                  
     if (snake_.hitSelf()) {
         flag = 1;
@@ -113,7 +114,7 @@ void GameScreen::update(sf::Time delta)
     //     return fruit.isExpired();
     // }), fruit_.end());
 
-    updateScore();
+
 }
 
 //渲染游戏界面

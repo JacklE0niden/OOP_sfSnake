@@ -28,10 +28,10 @@ public:
 	int countCommonFruits() const;
 	int countBonusFruits() const;
 
-	~GameScreen()
-	{
-		std::cout << "GameScreen destroyed" << std::endl;
-	}
+	// ~GameScreen()
+	// {
+	// 	std::cout << "GameScreen destroyed" << std::endl;
+	// }
 
 	//蛇节点移动
 	// void generateSnake();

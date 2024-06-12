@@ -40,10 +40,11 @@ void GameOverScreen::handleInput(sf::RenderWindow& window)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {   
-		Game::Screen = std::make_shared<MenuScreen>();
+        Game::Screen = std::make_shared<MenuScreen>();
 		window.close();
 		Game game;
 		game.run();
+        // Game::Screen = std::make_shared<MenuScreen>();
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
     {

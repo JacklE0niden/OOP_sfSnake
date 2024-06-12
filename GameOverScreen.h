@@ -25,9 +25,9 @@ public:
     //获取当前游戏难度
     Difficulty getDifficulty() const { return currentDifficulty_; }
 
-	~GameOverScreen(){
-		std::cout << "GameOverScreen destroyed" << std::endl;
-	}
+	// ~GameOverScreen(){
+	// 	std::cout << "GameOverScreen destroyed" << std::endl;
+	// }
 
 private:
 	sf::Font font_;

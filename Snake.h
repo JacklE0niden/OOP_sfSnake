@@ -40,6 +40,11 @@ public:
     void setcurrenteaten(int currenteaten){currenteaten_ = currenteaten;}
     void addcurrenteaten(){currenteaten_++;} // 新增加分数的函数
     int getcurrenteaten(){return currenteaten_;}
+    // ~Snake(){
+    //     pickupSound_.stop();
+    //     dieSound_.stop();
+    //     std::cout << "Snake destroyed" << std::endl;
+    // }
 
 private:
     void move();

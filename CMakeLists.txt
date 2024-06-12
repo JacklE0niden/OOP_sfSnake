@@ -23,11 +23,13 @@ target_include_directories(sfSnake PRIVATE
 )
 
 # 寻找 SFML 库
+# 需要根据电脑上的SFML位置进行修改
 set(SFML_DIR "C:/SFML-2.6.1/lib/cmake/SFML")
 find_package(SFML 2.6 COMPONENTS graphics audio window system)
 
 
 # 设置 SFML 相关的变量
+# 需要根据电脑上的SFML位置进行修改
 set(SFML_ROOT "C:/SFML-2.6.1")
 set(SFML_BIN_DIR "${SFML_ROOT}/bin")
 
