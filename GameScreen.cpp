@@ -47,6 +47,17 @@ GameScreen::GameScreen() : snake_(), flag(1), score(0)
                     textBounds.top + textBounds.height / 2);
     text_.setPosition(Game::Width / 2, Game::Height / 2);
 
+    // Pause text
+    pauseText_.setFont(font_);
+    pauseText_.setCharacterSize(36); // Set the character size
+    pauseText_.setFillColor(sf::Color::White);
+    pauseText_.setString("Press ESC or P to resume the game!");
+    sf::FloatRect pauseBounds = pauseText_.getLocalBounds();
+    pauseText_.setOrigin(pauseBounds.left + pauseBounds.width / 2,
+                         pauseBounds.top + pauseBounds.height / 2);
+    pauseText_.setPosition(Game::Width / 2, Game::Height / 2 + 50);
+
+
     //重置水果倒计时
     resetWarningText_.setFont(font_);
     resetWarningText_.setCharacterSize(24); // Set the character size for warning
@@ -68,13 +79,34 @@ GameScreen::GameScreen() : snake_(), flag(1), score(0)
 //处理输入
 void GameScreen::handleInput(sf::RenderWindow& window)
 {
-	snake_.handleInput(window);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)||sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
+        if (!isPaused) {
+            // 暂停游戏
+            isPaused = true;
+            // pauseStartTime = fruitResetClock.getElapsedTime();
+        } else {
+            // 恢复游戏
+            isPaused = false; // 不进行水果计时的重置，把水果视为一种环境现象
+            // fruitResetClock.restart(); 
+        }
+        sf::sleep(sf::seconds(0.1)); // 防止按键抖动
+    }
+
+    if (!isPaused) {
+        // 在游戏没有暂停时更新计时器
+        // totalElapsedTime += fruitResetClock.restart();
+        snake_.handleInput(window);
+    }
 }
 
 
 //更新游戏状态，蛇移动、水果生成、碰撞检测
 void GameScreen::update(sf::Time delta)
-{
+{    if (isPaused)
+    {
+        return;
+    }
+
     // if (countCommonFruits()<COMMON_FRUITNUM)
     generateFruit();
 
@@ -165,6 +197,10 @@ void GameScreen::render(sf::RenderWindow& window)
 
     if (fruitResetClock.getElapsedTime() >= fruitResetInterval - warningInterval) {
         window.draw(resetWarningText_);
+    }
+
+    if (isPaused) {
+        window.draw(pauseText_);
     }
 }
 

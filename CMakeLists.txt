@@ -16,17 +16,21 @@ add_executable(sfSnake
 )
 
 # 添加头文件目录
-# 添加头文件目录，包括SFML的头文件路径
+# 获取环境变量 SFML_ROOT
+set(SFML_ROOT $ENV{SFML_ROOT})
+
+
+# 设置 SFML_DIR，指向 SFML 的 CMake 文件目录
+set(SFML_DIR "${SFML_ROOT}/lib/cmake/SFML")
+
+# 包含 SFML 头文件
 target_include_directories(sfSnake PRIVATE 
     ${CMAKE_CURRENT_SOURCE_DIR} 
-    "C:/SFML-2.6.1/include"
+    "${SFML_ROOT}/include"
 )
 
-# 寻找 SFML 库
-# 需要根据电脑上的SFML位置进行修改
-set(SFML_DIR "C:/SFML-2.6.1/lib/cmake/SFML")
-find_package(SFML 2.6 COMPONENTS graphics audio window system)
-
+# 查找 SFML 包
+find_package(SFML 2.6 REQUIRED COMPONENTS system window graphics network audio)
 
 # 设置 SFML 相关的变量
 # 需要根据电脑上的SFML位置进行修改

@@ -35,6 +35,12 @@ public:
 
 	//蛇节点移动
 	// void generateSnake();
+	// void pause(){
+	// 	isPaused = true;
+	// }
+	// void resume(){
+	// 	isPaused = false;
+	// }
 
 
 
@@ -52,16 +58,23 @@ private:
 	sf::Text text_;
 	sf::Music music_;
 
-	// New clock for resetting fruits
-    sf::Clock fruitResetClock; // New clock for resetting fruits
-    const sf::Time fruitResetInterval = sf::seconds(20); // Interval for resetting fruits
-	const sf::Time warningInterval = sf::seconds(5); // Time to show warning before reset
+    sf::Clock fruitResetClock; // 重置水果的计时器
+    const sf::Time fruitResetInterval = sf::seconds(20); // 重置水果间隔
+	const sf::Time warningInterval = sf::seconds(5); // 预警
 	void resetFruits(); // New function to reset fruits
 	// 还有5秒就要重置水果
 	sf::Text resetWarningText_; // New text for reset warning
 
 	int flag{1};
 	// Game& game_;
+
+	// 暂停
+	bool isPaused{false};
+	sf::Text pauseText_;
+
+    // sf::Time totalElapsedTime;
+    // sf::Time pauseStartTime;
+
 };
 }
 
